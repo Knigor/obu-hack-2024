@@ -15,6 +15,8 @@ try {
     // Получение параметров запроса
     $from_flight = $_POST['from_flight'];
     $name_city = $_POST['name_city'];
+    $date_dep_flight = $_POST['date_dep_flight'];
+    $amount_passengers = $_POST['amount_passengers'];
     
     // Получаем id_city по name_city из таблицы city
     $stmt_city = $pdo->prepare("SELECT id_city FROM public.city WHERE name_city = :name_city");
@@ -27,11 +29,19 @@ try {
         $id_city = $city_result['id_city'];
         
         // Подготовка и выполнение запроса
-        $stmt = $pdo->prepare("SELECT * FROM public.flight WHERE from_flight = :from_flight AND id_city = :id_city");
-        $stmt->execute(array('from_flight' => $from_flight, 'id_city' => $id_city));
+        $stmt = $pdo->prepare("SELECT * FROM public.flight WHERE from_flight = :from_flight AND id_city = :id_city AND date_dep_flight = :date_dep_flight");
+        $stmt->execute(array('from_flight' => $from_flight, 'id_city' => $id_city, 'date_dep_flight' => $date_dep_flight));
         
         // Формирование результата в формате JSON
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // Если есть результаты, вычисляем стоимость с учетом количества пассажиров
+        if ($result) {
+            foreach ($result as &$row) {
+                $row['total_price'] = $row['price'] * $amount_passengers;
+            }
+        }
+        
         echo json_encode($result);
     } else {
         // Если результатов нет, выводим сообщение об ошибке

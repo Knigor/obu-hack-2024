@@ -182,7 +182,8 @@ CREATE TABLE public.users (
     photo_user character varying(100),
     news_mailing boolean NOT NULL,
     phone_user character varying(20),
-    birth_user date
+    birth_user date,
+    date_mail date
 );
 
 
@@ -281,8 +282,9 @@ COPY public.request_history (id_request_history, id_user, id_flight, view_date) 
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: user
 --
 
-COPY public.users (id_user, full_name_user, email_user, password_user, role_user, photo_user, news_mailing, phone_user, birth_user) FROM stdin;
-2	Болдырев Максим Романович	yaz678@bk.ru	5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5	user	\N	f	\N	\N
+COPY public.users (id_user, full_name_user, email_user, password_user, role_user, photo_user, news_mailing, phone_user, birth_user, date_mail) FROM stdin;
+2	Болдырев Максим Романович	yaz678@bk.ru	5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5	user	krutoi	t	\N	\N	2024-05-31
+3	Кретов Игорь Олегович	knigor1337@gmail.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	ne krutoi	t	\N	\N	2024-05-31
 \.
 
 
@@ -318,7 +320,7 @@ SELECT pg_catalog.setval('public.request_history_id_request_history_seq', 1, fal
 -- Name: users_id_user_seq; Type: SEQUENCE SET; Schema: public; Owner: user
 --
 
-SELECT pg_catalog.setval('public.users_id_user_seq', 2, true);
+SELECT pg_catalog.setval('public.users_id_user_seq', 3, true);
 
 
 --

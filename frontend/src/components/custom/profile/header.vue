@@ -6,7 +6,7 @@
     </div>
     <div class="flex gap-2 items-center mr-12">
       <div class="flex gap-2 items-center" v-if="isVisible">
-        <div class="w-[25px] h-[25px] rounded-xl bg-purple-400"></div>
+        <img class="w-[30px] h-[30px]" src="http://localhost:8080/img/empty.svg" />
         <p>{{ user }}</p>
         <Button variant="link">Профиль</Button>
         <Button @click="outUser" class="w-[50px] ml-2" variant="link">Выйти</Button>

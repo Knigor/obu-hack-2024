@@ -1,0 +1,48 @@
+version: "3.9"
+services:
+  webserver:
+    container_name: obu-hack-PHP-webServer
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./app:/var/www/html
+    ports:
+      - 8080:80
+    depends_on:
+      - postgres-db
+    networks:
+      - obu_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  postgres-db:
+    image: postgres:15.3-alpine3.17
+    container_name: obu-postgres-15
+    command:
+      - "postgres"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: user
+      POSTGRES_DB: obu-hack-2024
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ./postgres:/docker-entrypoint-initdb.d
+      - postgresdb-data:/var/lib/postgresql/data
+      - ./postgres:/dump
+    ports:
+      - "5433:5432"
+    networks:
+      obu_network:
+
+volumes:
+  postgresdb-data:
+
+networks:
+  obu_network:
+    driver: bridge
+    name: obu_network
+    ipam:
+      driver: default
+      config:
+        - subnet: 174.33.0.0/25

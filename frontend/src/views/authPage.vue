@@ -5,7 +5,7 @@
 
       <div class="relative z-20 flex items-center text-lg font-medium gap-2">
         <PlaneTakeoff />
-        5-fly
+        <p class="text-lg font-semibold">5-fly</p>
       </div>
       <div class="relative z-20 mt-auto">
         <blockquote class="space-y-2">
@@ -117,10 +117,12 @@ const onSubmit = handleSubmit(async (formData) => {
   const apiFormData = new FormData()
   const userData = formData
 
-  const hashedPassword = CryptoJS.SHA256(userData.password).toString(CryptoJS.enc.Hex)
+  const hashedPassword = await hashPassword(userData.password)
 
   apiFormData.append('email', userData.email)
   apiFormData.append('password', hashedPassword)
+
+  console.log(userData)
 
   try {
     const response = await axios.post('http://localhost:8080/auth.php', apiFormData, {
@@ -154,7 +156,15 @@ const onSubmit = handleSubmit(async (formData) => {
   }
 })
 
-// Сделать логику для авторизации
+// ниже функция для хеширования пароля
+async function hashPassword(password) {
+  const encoder = new TextEncoder()
+  const data = encoder.encode(password)
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data)
+  const hashArray = Array.from(new Uint8Array(hashBuffer))
+  const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('')
+  return hashHex
+}
 </script>
 
 <style scoped>

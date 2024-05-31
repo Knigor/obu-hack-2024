@@ -2,11 +2,11 @@
   <div class="flex items-center justify-between mt-2">
     <div class="flex gap-2 ml-12">
       <PlaneTakeoff color="green" />
-      <p>5-fly</p>
+      <p class="text-lg font-semibold">5-fly</p>
     </div>
     <div class="flex gap-2 items-center mr-12">
       <div class="flex gap-2 items-center" v-if="isVisible">
-        <img class="w-[30px] h-[30px]" src="http://localhost:8080/img/empty.svg" />
+        <img class="w-[30px] h-[30px]" :src="`http://localhost:8080/img/${avatar}`" />
         <p>{{ user }}</p>
         <Button variant="link">Профиль</Button>
         <Button @click="outUser" class="w-[50px] ml-2" variant="link">Выйти</Button>
@@ -29,11 +29,14 @@ let isVisible = ref(false)
 
 let user = ref('')
 
+let avatar = ref('')
+
 let router = useRouter()
 
 if (localStorage.length !== 0) {
   isVisible.value = true
   user.value = localStorage.full_name
+  avatar.value = localStorage.photo_user
 } else {
   isVisible.value = false
 }

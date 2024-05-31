@@ -99,16 +99,20 @@ const onSubmit = handleSubmit(async (formData) => {
   const apiFormData = new FormData()
   const userData = formData
 
+  const hashedPassword = await hashPassword(userData.password)
+
+  console.log(hashedPassword)
+
   console.log(userData)
 
   console.log('Клик')
 
-  apiFormData.append('login', userData.login)
-  apiFormData.append('fio', userData.FIO)
-  apiFormData.append('password', userData.password)
+  apiFormData.append('email', userData.email)
+  apiFormData.append('password', hashedPassword)
+  apiFormData.append('full_name', userData.FIO)
 
   try {
-    const response = await axios.post('http://localhost/add-user', apiFormData, {
+    const response = await axios.post('http://localhost:8080/registration.php', apiFormData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -122,7 +126,7 @@ const onSubmit = handleSubmit(async (formData) => {
 
     if (response.data.status == 'error') {
       toast({
-        description: 'Ошибка регистрации, пользователь с таким логином уже существует',
+        description: 'Ошибка регистрации, пользователь с такой почтой уже существует',
         variant: 'destructive'
       })
       return
@@ -130,15 +134,25 @@ const onSubmit = handleSubmit(async (formData) => {
 
     if (response.data.status == 'success') {
       localStorage.clear()
-      localStorage.setItem('id_user', response.data.User.id)
-      localStorage.setItem('login', response.data.User.login)
-      localStorage.setItem('full_name', response.data.User.fio)
+      localStorage.setItem('id_user', response.data.user.id_user)
+      localStorage.setItem('role', response.data.user.role_user)
+      localStorage.setItem('full_name', response.data.user.full_name_user)
+      localStorage.setItem('photo_user', response.data.user.photo_user)
       router.push('/')
     }
   } catch (error) {
     console.error('Ошибка при отправке данных:', error)
   }
 })
+
+async function hashPassword(password) {
+  const encoder = new TextEncoder()
+  const data = encoder.encode(password)
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data)
+  const hashArray = Array.from(new Uint8Array(hashBuffer))
+  const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('')
+  return hashHex
+}
 </script>
 
 <style lang="scss" scoped></style>

@@ -21,11 +21,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             $_SESSION["user"] = $user;
 
-            $role = $user['role_user']; // Corrected the role field to role_user
+            $role = $user['role_user'];
             $fullName = $user['full_name_user'];
+            $photo = $user['photo_user']; // Add this line to fetch the photo
 
             header('Content-Type: application/json');
-            echo json_encode(array('status' => 'success', 'id_user' => $user['id_user'], 'role' => $role, 'full_name' => $fullName));
+            echo json_encode(array('status' => 'success', 'id_user' => $user['id_user'], 'role' => $role, 'full_name' => $fullName, 'photo_user' => $photo)); // Include 'photo_user' in the array
             exit();
         } else {
 

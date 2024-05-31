@@ -1,9 +1,11 @@
 <template>
-  <div>
-    <h1>MAIN PAGE</h1>
+  <div class="flex flex-col justify-center">
+    <Header />
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import Header from '../components/custom/profile/header.vue'
+</script>
 
 <style lang="scss" scoped></style>

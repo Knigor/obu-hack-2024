@@ -1,13 +1,13 @@
 <template>
   <div class="flex items-center justify-between mt-2">
     <div class="flex gap-2 ml-12">
-      <p>Logo</p>
+      <PlaneTakeoff color="green" />
       <p>5-fly</p>
     </div>
     <div class="flex gap-2 items-center mr-12">
       <div class="flex gap-2 items-center" v-if="isVisible">
         <div class="w-[25px] h-[25px] rounded-xl bg-purple-400"></div>
-        <p>Кретов Игорь Олегович</p>
+        <p>{{ user }}</p>
         <Button variant="link">Профиль</Button>
         <Button @click="outUser" class="w-[50px] ml-2" variant="link">Выйти</Button>
       </div>
@@ -21,15 +21,30 @@ import { Button } from '@/components/ui/button'
 import { onMounted, ref } from 'vue'
 import axios from 'axios'
 import { useRoute, useRouter } from 'vue-router'
+import { PlaneTakeoff } from 'lucide-vue-next'
+
+console.log(localStorage)
 
 let isVisible = ref(false)
 
-const outUser = async () => {
+let user = ref('')
+
+let router = useRouter()
+
+if (localStorage.length !== 0) {
+  isVisible.value = true
+  user.value = localStorage.full_name
+} else {
   isVisible.value = false
 }
 
+const outUser = async () => {
+  isVisible.value = false
+  localStorage.clear()
+}
+
 const authPage = async () => {
-  isVisible.value = true
+  router.push('/authPage')
 }
 </script>
 

@@ -30,15 +30,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo json_encode(array('status' => 'error', 'message' => 'Пользователь с такой почтой уже существует.'));
             exit();
         } else {
-            // Хеширование пароля
-            $hashedPassword = hash('sha256', $password);
+     
 
             // Set default photo_user value
             $photo_user = '/empty.svg';
 
             $data = [
                 'email' => $email,
-                'hashedPassword' => $hashedPassword,
+                'password' => $password,
                 'full_name_user' => $full_name,
                 'role_user' => $role_user,
                 'news_mailing' => 0, // Добавляем значение по умолчанию для news_mailing
@@ -53,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 'photo_user' => $photo_user
             ];
 
-            $stmtInsert = $pdo->prepare("INSERT INTO users (email_user, password_user, role_user, full_name_user, news_mailing, photo_user) VALUES (:email, :hashedPassword, :role_user, :full_name_user, :news_mailing, :photo_user)");
+            $stmtInsert = $pdo->prepare("INSERT INTO users (email_user, password_user, role_user, full_name_user, news_mailing, photo_user) VALUES (:email, :password, :role_user, :full_name_user, :news_mailing, :photo_user)");
             $stmtInsert->execute($data);
 
             $id_user = $pdo->lastInsertId();

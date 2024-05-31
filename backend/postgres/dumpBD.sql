@@ -324,6 +324,8 @@ COPY public.city (id_city, name_city, amount_views_city) FROM stdin;
 --
 
 COPY public.favorites (id_favorites, id_place, id_user) FROM stdin;
+5	14	2
+6	15	2
 \.
 
 
@@ -353,16 +355,17 @@ COPY public.flight (id_flight, id_user, from_flight, date_dep_flight, airline_fl
 --
 
 COPY public.places (id_place, photo_place, name_place, url_place, favorites_count, id_city, desc_place) FROM stdin;
-4	\N	Красная площадь, Кремль, Большой театр	https://www.kreml.ru	1500	1	\N
-5	\N	Эрмитаж, Дворцовая площадь, Петропавловская крепость	https://www.hermitagemuseum.org	1200	2	\N
-6	\N	Зоопарк, Новосибирский музей краеведения, Новосибирская городская скульптура	https://nskzoo.ru	800	3	\N
-7	\N	Центральный парк культуры и отдыха им. В. В. Маяковского, Плотинка	https://www.ekatmuseum.ru	700	4	\N
-8	\N	Кремль, Вечный огонь, Кладбище 90-й гвардейской дивизии	https://nnovgorod.net	600	5	\N
-9	\N	Казанский кремль, Казанский университет, Музей натуральной истории	https://kzn.ru	500	6	\N
-10	\N	Шатровая гора, Сузгун, Набережная Чебаркуля	https://chelmuseum.ru	450	7	\N
-11	\N	Парк имени 30-летия Победы, Парк культуры и отдыха Омский	https://omsktown.ru	400	8	\N
-12	\N	Аквапарк "Акварель", Стадион "Самара-Арена", Зоопарк	https://www.samaratoday.ru	550	9	\N
-13	\N	Парк Горького, Заповедник "Ростовский", Парк Активного Отдыха "Зеленый Остров"	https://www.visitrostovregion.ru	900	10	\N
+14	\N	Красная площадь, Кремль, Большой театр	https://www.kreml.ru	1500	1	Исторические и архитектурные символы России, представляющие богатую культурную историю Москвы.
+15	\N	Эрмитаж, Дворцовая площадь, Петропавловская крепость	https://www.hermitagemuseum.org	1200	2	Знаменитые музеи и исторические памятники, отражающие богатство культурного наследия Санкт-Петербурга.
+16	\N	Зоопарк, Новосибирский музей краеведения, Новосибирская городская скульптура	https://nskzoo.ru	800	3	Интересные места и аттракции, предлагаемые к посещению в Новосибирске.
+17	\N	Центральный парк культуры и отдыха им. В. В. Маяковского, Плотинка	https://www.ekatmuseum.ru	700	4	Зеленые зоны отдыха и культурные места в Екатеринбурге, привлекающие местных жителей и туристов.
+18	\N	Кремль, Вечный огонь, Кладбище 90-й гвардейской дивизии	https://nnovgorod.net	600	5	Исторические места и памятники в Нижнем Новгороде, связанные с Великой Отечественной войной.
+19	\N	Казанский кремль, Казанский университет, Музей натуральной истории	https://kzn.ru	500	6	Культурные и архитектурные объекты, являющиеся символами города Казани.
+20	\N	Шатровая гора, Сузгун, Набережная Чебаркуля	https://chelmuseum.ru	450	7	Природные достопримечательности и зоны отдыха в Челябинске, популярные среди местных жителей и туристов.
+21	\N	Парк имени 30-летия Победы, Парк культуры и отдыха Омский	https://omsktown.ru	400	8	Парки и зеленые зоны отдыха в Омске, предлагающие возможности для активного времяпрепровождения.
+22	\N	Аквапарк "Акварель", Стадион "Самара-Арена", Зоопарк	https://www.samaratoday.ru	550	9	Развлекательные и культурные объекты в Самаре, привлекающие как местных жителей, так и туристов.
+23	\N	Парк Горького, Заповедник "Ростовский", Парк Активного Отдыха "Зеленый Остров"	https://www.visitrostovregion.ru	900	10	Парки и природные зоны отдыха в Ростове-на-Дону, предлагающие возможности для отдыха и активного времяпрепровождения.
+24	\N	Парк Горького, Третьяковская галерея, ВДНХ	https://www.mosgorpark.ru	1300	1	Парк Горького - центральный парк культуры и отдыха, Третьяковская галерея - главный музей русского изобразительного искусства, ВДНХ - выставочный центр с множеством павильонов и аттракционов.
 \.
 
 
@@ -390,19 +393,20 @@ COPY public.request_history (id_request_history, id_user, id_flight, view_date) 
 --
 
 COPY public.users (id_user, full_name_user, email_user, password_user, role_user, photo_user, news_mailing, phone_user, birth_user, date_mail) FROM stdin;
-2	Болдырев Максим Романович	yaz678@bk.ru	5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5	user	krutoi	t	\N	\N	2024-05-31
-3	Кретов Игорь Олегович	knigor1337@gmail.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	ne krutoi	t	\N	\N	2024-05-31
-4	Толстунов Владимир Дмитриевич	r.vladimir.tolstunov@gmail.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	\N	t	\N	\N	2024-05-31
-5	Иван Иванов	ivan@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	\N	t	\N	\N	\N
-6	Мария Петрова	maria@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	\N	f	\N	\N	\N
-7	Александр Сидоров	alex@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	\N	t	\N	\N	\N
-8	Елена Смирнова	elena@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	\N	f	\N	\N	\N
-9	Андрей Кузнецов	andrey@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	\N	t	\N	\N	\N
-10	Ольга Попова	olga@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	\N	f	\N	\N	\N
-11	Сергей Васильев	sergey@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	\N	t	\N	\N	\N
-12	Анна Соколова	anna@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	\N	f	\N	\N	\N
-13	Дмитрий Михайлов	dmitry@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	\N	t	\N	\N	\N
-14	Екатерина Новикова	ekaterina@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	\N	f	\N	\N	\N
+10	Ольга Попова	olga@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	f	\N	\N	\N
+11	Сергей Васильев	sergey@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	t	\N	\N	\N
+12	Анна Соколова	anna@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	f	\N	\N	\N
+13	Дмитрий Михайлов	dmitry@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	t	\N	\N	\N
+14	Екатерина Новикова	ekaterina@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	f	\N	\N	\N
+15	Дьяков Дмитрий Владимирович	example@bk.ru	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	f	\N	\N	\N
+2	Болдырев Максим Романович	yaz678@bk.ru	5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5	user	/empty.svg	t	\N	\N	2024-05-31
+3	Кретов Игорь Олегович	knigor1337@gmail.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	t	\N	\N	2024-05-31
+4	Толстунов Владимир Дмитриевич	r.vladimir.tolstunov@gmail.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	t	\N	\N	2024-05-31
+5	Иван Иванов	ivan@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	t	\N	\N	\N
+6	Мария Петрова	maria@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	f	\N	\N	\N
+7	Александр Сидоров	alex@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	t	\N	\N	\N
+8	Елена Смирнова	elena@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	f	\N	\N	\N
+9	Андрей Кузнецов	andrey@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	t	\N	\N	\N
 \.
 
 
@@ -417,7 +421,7 @@ SELECT pg_catalog.setval('public.city_id_city_seq', 20, true);
 -- Name: favorites_id_favorites_seq; Type: SEQUENCE SET; Schema: public; Owner: user
 --
 
-SELECT pg_catalog.setval('public.favorites_id_favorites_seq', 1, false);
+SELECT pg_catalog.setval('public.favorites_id_favorites_seq', 6, true);
 
 
 --
@@ -431,7 +435,7 @@ SELECT pg_catalog.setval('public.flight_id_flight_seq', 23, true);
 -- Name: places_id_place_seq; Type: SEQUENCE SET; Schema: public; Owner: user
 --
 
-SELECT pg_catalog.setval('public.places_id_place_seq', 13, true);
+SELECT pg_catalog.setval('public.places_id_place_seq', 24, true);
 
 
 --
@@ -445,7 +449,7 @@ SELECT pg_catalog.setval('public.request_history_id_request_history_seq', 11, tr
 -- Name: users_id_user_seq; Type: SEQUENCE SET; Schema: public; Owner: user
 --
 
-SELECT pg_catalog.setval('public.users_id_user_seq', 14, true);
+SELECT pg_catalog.setval('public.users_id_user_seq', 15, true);
 
 
 --

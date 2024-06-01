@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center justify-between mt-2">
-    <div class="flex items-center gap-2 ml-12">
+    <div @click="goToMain" class="flex items-center gap-2 ml-12 cursor-pointer">
       <Plane color="green" />
       <p class="text-2xl text-green-900 font-semibold">5-fly</p>
     </div>
@@ -44,6 +44,10 @@ if (localStorage.length !== 0) {
 const outUser = async () => {
   isVisible.value = false
   localStorage.clear()
+}
+
+const goToMain = () => {
+  router.push('/')
 }
 
 const goToProfile = () => {

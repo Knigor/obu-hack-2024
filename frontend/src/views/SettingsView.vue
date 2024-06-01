@@ -19,19 +19,19 @@
             </div>
             <div class="flex flex-col gap-3">
               <div class="flex gap-4 items-center">
-                <p class="w-[96px]">ФИО</p>
+                <p class="w-[112px]">ФИО</p>
                 <Input type="text" placeholder="Ваш ФИО..." v-bind="componentField" />
               </div>
               <div class="flex gap-4 items-center">
-                <p class="w-[96px]">Почта</p>
+                <p class="w-[112px]">Почта</p>
                 <Input type="text" placeholder="Ваша почта..." v-bind="componentField" />
               </div>
               <div class="flex gap-4 items-center">
-                <p class="w-[96px]">Телефон</p>
+                <p class="w-[112px]">Телефон</p>
                 <Input type="text" placeholder="Ваш телефон..." v-bind="componentField" />
               </div>
               <div class="flex gap-4 items-center">
-                <p class="w-[96px]">Дата рождения</p>
+                <p class="w-[112px]">Дата рождения</p>
                 <Popover>
                   <PopoverTrigger as-child>
                     <Button
@@ -62,7 +62,7 @@
             </div>
             <div class="flex flex-col gap-3">
               <div class="flex gap-4 items-center">
-                <p class="w-[96px]">ФИО</p>
+                <p class="w-[112px]">Текущий пароль</p>
                 <Input
                   type="password"
                   placeholder="Ваш текущий пароль..."
@@ -70,7 +70,7 @@
                 />
               </div>
               <div class="flex gap-4 items-center">
-                <p class="w-[96px]">Почта</p>
+                <p class="w-[112px]">Новый пароль</p>
                 <Input type="password" placeholder="Ваш новый пароль..." v-bind="componentField" />
               </div>
             </div>

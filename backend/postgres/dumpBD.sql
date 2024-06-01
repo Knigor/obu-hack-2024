@@ -153,6 +153,57 @@ CREATE TABLE public.ml_request (
 ALTER TABLE public.ml_request OWNER TO "user";
 
 --
+-- Name: ml_request_history; Type: TABLE; Schema: public; Owner: user
+--
+
+CREATE TABLE public.ml_request_history (
+    id_user integer,
+    id_ml_request integer,
+    view_date date,
+    id_ml_history integer NOT NULL
+);
+
+
+ALTER TABLE public.ml_request_history OWNER TO "user";
+
+--
+-- Name: ml_request_history_id_ml_history_new_seq; Type: SEQUENCE; Schema: public; Owner: user
+--
+
+CREATE SEQUENCE public.ml_request_history_id_ml_history_new_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.ml_request_history_id_ml_history_new_seq OWNER TO "user";
+
+--
+-- Name: ml_request_history_id_ml_history_new_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: user
+--
+
+ALTER SEQUENCE public.ml_request_history_id_ml_history_new_seq OWNED BY public.ml_request_history.id_ml_history;
+
+
+--
+-- Name: ml_request_history_id_ml_history_seq; Type: SEQUENCE; Schema: public; Owner: user
+--
+
+CREATE SEQUENCE public.ml_request_history_id_ml_history_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.ml_request_history_id_ml_history_seq OWNER TO "user";
+
+--
 -- Name: ml_request_id_ml_request_seq; Type: SEQUENCE; Schema: public; Owner: user
 --
 
@@ -320,6 +371,13 @@ ALTER TABLE ONLY public.ml_request ALTER COLUMN id_ml_request SET DEFAULT nextva
 
 
 --
+-- Name: ml_request_history id_ml_history; Type: DEFAULT; Schema: public; Owner: user
+--
+
+ALTER TABLE ONLY public.ml_request_history ALTER COLUMN id_ml_history SET DEFAULT nextval('public.ml_request_history_id_ml_history_new_seq'::regclass);
+
+
+--
 -- Name: places id_place; Type: DEFAULT; Schema: public; Owner: user
 --
 
@@ -395,6 +453,17 @@ COPY public.flight (id_flight, id_user, from_flight, date_dep_flight, airline_fl
 --
 
 COPY public.ml_request (id_ml_request, price_request, class_request, position_request, positionto_request, amount_stops_request, date_arr_request, date_dep_request, id_user) FROM stdin;
+1	1500	Zero	Moscow	Bangadesh	1	2024-06-01 00:00:00	2024-05-31 00:00:00	2
+\.
+
+
+--
+-- Data for Name: ml_request_history; Type: TABLE DATA; Schema: public; Owner: user
+--
+
+COPY public.ml_request_history (id_user, id_ml_request, view_date, id_ml_history) FROM stdin;
+2	1	2024-06-01	1
+3	1	2024-06-01	2
 \.
 
 
@@ -480,10 +549,24 @@ SELECT pg_catalog.setval('public.flight_id_flight_seq', 24, true);
 
 
 --
+-- Name: ml_request_history_id_ml_history_new_seq; Type: SEQUENCE SET; Schema: public; Owner: user
+--
+
+SELECT pg_catalog.setval('public.ml_request_history_id_ml_history_new_seq', 2, true);
+
+
+--
+-- Name: ml_request_history_id_ml_history_seq; Type: SEQUENCE SET; Schema: public; Owner: user
+--
+
+SELECT pg_catalog.setval('public.ml_request_history_id_ml_history_seq', 1, false);
+
+
+--
 -- Name: ml_request_id_ml_request_seq; Type: SEQUENCE SET; Schema: public; Owner: user
 --
 
-SELECT pg_catalog.setval('public.ml_request_id_ml_request_seq', 1, false);
+SELECT pg_catalog.setval('public.ml_request_id_ml_request_seq', 1, true);
 
 
 --
@@ -513,6 +596,14 @@ SELECT pg_catalog.setval('public.users_id_user_seq', 15, true);
 
 ALTER TABLE ONLY public.city
     ADD CONSTRAINT city_pkey PRIMARY KEY (id_city);
+
+
+--
+-- Name: ml_request_history ml_request_history_pkey; Type: CONSTRAINT; Schema: public; Owner: user
+--
+
+ALTER TABLE ONLY public.ml_request_history
+    ADD CONSTRAINT ml_request_history_pkey PRIMARY KEY (id_ml_history);
 
 
 --
@@ -655,6 +746,22 @@ ALTER TABLE ONLY public.favorites
 
 ALTER TABLE ONLY public.flight
     ADD CONSTRAINT fk_flight_also_has_users FOREIGN KEY (id_user) REFERENCES public.users(id_user) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: ml_request_history fk_ml_request_history_ml_request; Type: FK CONSTRAINT; Schema: public; Owner: user
+--
+
+ALTER TABLE ONLY public.ml_request_history
+    ADD CONSTRAINT fk_ml_request_history_ml_request FOREIGN KEY (id_ml_request) REFERENCES public.ml_request(id_ml_request) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: ml_request_history fk_ml_request_history_user; Type: FK CONSTRAINT; Schema: public; Owner: user
+--
+
+ALTER TABLE ONLY public.ml_request_history
+    ADD CONSTRAINT fk_ml_request_history_user FOREIGN KEY (id_user) REFERENCES public.users(id_user) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --

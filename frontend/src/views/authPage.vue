@@ -4,8 +4,8 @@
       <div class="absolute inset-0 bg-image"></div>
 
       <div class="relative z-20 flex items-center text-lg font-medium gap-2">
-        <PlaneTakeoff />
-        <p class="text-lg font-semibold">5-fly</p>
+        <Plane />
+        <p class="text-2xl font-semibold">5-fly</p>
       </div>
       <div class="relative z-20 mt-auto">
         <blockquote class="space-y-2">
@@ -19,7 +19,7 @@
     </div>
 
     <div class="flex flex-col items-center gap-4 mr-12">
-      <h1 class="font-bold">Добро пожаловать</h1>
+      <h1 class="font-bold">Войдите</h1>
       <div class="border-t h-5 w-96 border-green-600"></div>
 
       <div class="grid w-full max-w-sm items-center gap-1.5">
@@ -79,8 +79,7 @@ import {
 } from '@/components/ui/form'
 import { ref } from 'vue'
 import axios from 'axios'
-import { PlaneTakeoff } from 'lucide-vue-next'
-import CryptoJS from 'crypto-js'
+import { Plane } from 'lucide-vue-next'
 
 // Переход на страницу регистрации
 

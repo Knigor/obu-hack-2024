@@ -1,7 +1,25 @@
 <template>
   <div class="flex items-center justify-center h-screen">
-    <div class="flex flex-col items-center gap-10">
-      <h1 class="font-bold">Добро пожаловать</h1>
+    <div class="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
+      <div class="absolute inset-0 bg-image"></div>
+
+      <div class="relative z-200 flex items-center text-lg font-medium gap-2">
+        <Plane />
+        <p class="text-2xl font-semibold">5-fly</p>
+      </div>
+      <div class="relative z-20 mt-auto">
+        <blockquote class="space-y-2">
+          <p class="text-lg">
+            “Стратегия без тактики — это самый медленный путь к победе. Тактика без стратегии — это
+            просто суета перед поражением.”
+          </p>
+          <footer class="text-sm">Сунь Цзы</footer>
+        </blockquote>
+      </div>
+    </div>
+
+    <div class="flex flex-col items-center gap-4 ml-24 mr-12">
+      <h1 class="font-bold">Зарегистрируйтесь</h1>
       <div class="border-t h-5 w-96 border-green-600"></div>
 
       <div class="grid w-full max-w-sm items-center gap-1.5">
@@ -43,6 +61,7 @@
           </div>
         </form>
       </div>
+      <Button @click="goToMain" class="w-[50px] mt-2" variant="link">На главную</Button>
     </div>
   </div>
 </template>
@@ -67,8 +86,14 @@ import {
 } from '@/components/ui/form'
 import { ref } from 'vue'
 import axios from 'axios'
+import { Plane } from 'lucide-vue-next'
 
 const router = useRouter()
+
+const goToMain = () => {
+  localStorage.clear()
+  router.push('/')
+}
 
 const gotToLogin = () => {
   router.push('/authPage')
@@ -155,4 +180,11 @@ async function hashPassword(password) {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.bg-image {
+  background-image: url('../img/Viceory-Bali.png');
+  background-size: cover; /* Масштабировать изображение, чтобы оно покрывало весь элемент */
+  background-position: center; /* Центрировать изображение */
+  background-repeat: no-repeat; /* Не повторять изображение */
+}
+</style>

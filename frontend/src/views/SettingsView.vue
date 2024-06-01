@@ -13,7 +13,7 @@
         <div class="flex gap-8 w-full">
           <!-- Личная информация -->
           <div class="flex gap-6 flex-col w-full">
-            <div class="flex justify-between">
+            <div class="flex justify-between items-center">
               <h3>Личная информация</h3>
               <Button>Сохранить</Button>
             </div>
@@ -56,7 +56,7 @@
           </div>
           <!-- Безопасность -->
           <div class="flex gap-6 flex-col w-full">
-            <div class="flex justify-between">
+            <div class="flex justify-between items-center">
               <h3>Безопасность</h3>
               <Button type="submit">Обновить</Button>
             </div>
@@ -80,7 +80,7 @@
         <div class="flex gap-8 w-full">
           <div class="flex">
             <div class="flex gap-6 flex-col w-full">
-              <div class="flex justify-between">
+              <div class="flex justify-between items-center">
                 <h3>Рассылки</h3>
               </div>
               <div class="flex flex-col gap-3">

@@ -1,8 +1,8 @@
 <template>
   <div class="flex items-center justify-between mt-2">
-    <div class="flex gap-2 ml-12">
-      <PlaneTakeoff color="green" />
-      <p class="text-lg font-semibold">5-fly</p>
+    <div class="flex items-center gap-2 ml-12">
+      <Plane color="green" />
+      <p class="text-2xl text-green-900 font-semibold">5-fly</p>
     </div>
     <div class="flex gap-2 items-center mr-12">
       <div class="flex gap-2 items-center" v-if="isVisible">
@@ -21,7 +21,7 @@ import { Button } from '@/components/ui/button'
 import { onMounted, ref } from 'vue'
 import axios from 'axios'
 import { useRoute, useRouter } from 'vue-router'
-import { PlaneTakeoff } from 'lucide-vue-next'
+import { Plane } from 'lucide-vue-next'
 
 console.log(localStorage)
 

@@ -6,23 +6,45 @@
         <p>Откуда</p>
         <DropdownMenu>
           <DropdownMenuTrigger as-child>
-            <Button variant="outline"> Open </Button>
+            <Button variant="outline" class="text-gray-500 w-[200px] flex justify-start">
+              <p>{{ cityNames[position] }}</p>
+            </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent class="w-56">
-            <DropdownMenuLabel>Panel Position</DropdownMenuLabel>
+            <DropdownMenuLabel>Откуда</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuRadioGroup v-model="position">
-              <DropdownMenuRadioItem value="top"> Top </DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="bottom"> Bottom </DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="right"> Right </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="Bangalore"> Бангалор </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="Chennai"> Ченнаи </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="Delhi"> Дели </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="Hyderabad"> Хайдарабад </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="Kolkata"> Калькутта </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="Mumbai"> Мумбаи </DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
       <div class="flex flex-col gap-1">
         <p>Куда</p>
-        <Input type="email" placeholder="Стамбул" />
-        <div class="flex flex-col gap-2"></div>
+        <DropdownMenu>
+          <DropdownMenuTrigger as-child>
+            <Button variant="outline" class="text-gray-500 w-[200px] flex justify-start">
+              <p>{{ cityNames[positionTo] }}</p>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent class="w-56">
+            <DropdownMenuLabel>Откуда</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuRadioGroup v-model="positionTo">
+              <DropdownMenuRadioItem value="Bangalore"> Бангалор </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="Chennai"> Ченнаи </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="Delhi"> Дели </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="Hyderabad"> Хайдарабад </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="Kolkata"> Калькутта </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="Mumbai"> Мумбаи </DropdownMenuRadioItem>
+            </DropdownMenuRadioGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
       <div class="flex flex-col gap-1">
         <p>Вылетаем</p>
@@ -50,6 +72,9 @@
         </div>
       </div>
     </div>
+    <div class="flex justify-end">
+      <Button class="mt-4">Найти</Button>
+    </div>
   </div>
 </template>
 
@@ -72,7 +97,19 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 
-const position = ref('bottom')
+const cityNames = {
+  Default: 'Выберите город',
+  Bangalore: 'Бангалор',
+  Chennai: 'Ченнаи',
+  Delhi: 'Дели',
+  Hyderabad: 'Хайдарабад',
+  Kolkata: 'Калькутта',
+  Mumbai: 'Мумбаи'
+}
+
+const position = ref('Default')
+
+const positionTo = ref('Default')
 
 const minusCount = () => {
   if (countPeople.value > 1) {

@@ -17,7 +17,7 @@ class Network(Module):
 
 
 model = torch.load('model')
-# model.eval()
+model.eval()
 
 city_indexes = {'Bangalore': 0, 'Chennai': 1, 'Delhi': 2, \
                 'Hyderabad': 3, 'Kolkata': 4, 'Mumbai': 5}

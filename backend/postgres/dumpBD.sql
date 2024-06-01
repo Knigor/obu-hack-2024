@@ -104,7 +104,8 @@ CREATE TABLE public.flight (
     price integer,
     amount_stops integer,
     date_arr_flight timestamp without time zone,
-    id_city integer
+    id_city integer,
+    econom_class boolean
 );
 
 
@@ -296,7 +297,6 @@ ALTER TABLE ONLY public.users ALTER COLUMN id_user SET DEFAULT nextval('public.u
 --
 
 COPY public.city (id_city, name_city, amount_views_city) FROM stdin;
-1	Москва	100
 2	Санкт-Петербург	80
 3	Новосибирск	60
 4	Екатеринбург	50
@@ -306,16 +306,7 @@ COPY public.city (id_city, name_city, amount_views_city) FROM stdin;
 8	Омск	30
 9	Самара	55
 10	Ростов-на-Дону	70
-11	Москва	100
-12	Санкт-Петербург	80
-13	Новосибирск	60
-14	Екатеринбург	50
-15	Нижний Новгород	40
-16	Казань	45
-17	Челябинск	35
-18	Омск	30
-19	Самара	55
-20	Ростов-на-Дону	70
+1	Москва	285
 \.
 
 
@@ -325,7 +316,7 @@ COPY public.city (id_city, name_city, amount_views_city) FROM stdin;
 
 COPY public.favorites (id_favorites, id_place, id_user) FROM stdin;
 5	14	2
-6	15	2
+8	14	2
 \.
 
 
@@ -333,20 +324,21 @@ COPY public.favorites (id_favorites, id_place, id_user) FROM stdin;
 -- Data for Name: flight; Type: TABLE DATA; Schema: public; Owner: user
 --
 
-COPY public.flight (id_flight, id_user, from_flight, date_dep_flight, airline_flight, time_taken_flight, price, amount_stops, date_arr_flight, id_city) FROM stdin;
-2	3	Липецк	2024-05-31 00:00:00	S7	12 ч	15000	\N	\N	1
-3	2	Липецк	2024-05-31 00:00:00	S7	12 ч	15000	\N	\N	2
-1	2	Липецк	2024-05-31 00:00:00	S7	12 ч	15000	\N	2024-05-31 00:00:00	5
-14	2	Москва	2024-06-01 08:00:00	Аэрофлот	2 часа	50000	0	2024-06-01 10:00:00	6
-15	3	Санкт-Петербург	2024-06-02 10:00:00	S7	2 часа	51000	0	2024-06-02 12:00:00	20
-16	4	Новосибирск	2024-06-03 12:00:00	Уральские авиалинии	3 часа	55000	1	2024-06-03 15:00:00	14
-17	5	Екатеринбург	2024-06-04 14:00:00	S7	3 часа	56000	1	2024-06-04 17:00:00	13
-18	6	Ростов-на-Дону	2024-06-05 09:00:00	Победа	2 часа	52000	0	2024-06-05 11:00:00	11
-19	7	Москва	2024-06-06 11:00:00	Аэрофлот	2 часа	51000	0	2024-06-06 13:00:00	15
-20	8	Санкт-Петербург	2024-06-07 08:00:00	S7	5 часов	70000	2	2024-06-07 13:00:00	5
-21	9	Москва	2024-06-08 10:00:00	Уральские авиалинии	4 часа	58000	1	2024-06-08 14:00:00	6
-22	10	Екатеринбург	2024-06-09 13:00:00	S7	4 часа	57000	1	2024-06-09 17:00:00	1
-23	2	Москва	2024-06-10 15:00:00	Аэрофлот	2 часа	50000	0	2024-06-10 17:00:00	2
+COPY public.flight (id_flight, id_user, from_flight, date_dep_flight, airline_flight, time_taken_flight, price, amount_stops, date_arr_flight, id_city, econom_class) FROM stdin;
+14	2	Москва	2024-06-01 08:00:00	Aeroflot	2 часа	50000	0	2024-06-01 10:00:00	6	f
+23	2	Москва	2024-06-10 15:00:00	Aeroflot	2 часа	50000	0	2024-06-10 17:00:00	2	f
+24	3	Липецк	2024-05-31 00:00:00	Aeroflot	5 ч	30000	1	2024-06-02 12:00:00	1	t
+18	6	Ростов-на-Дону	2024-06-05 09:00:00	Pobeda	2 часа	52000	0	2024-06-05 11:00:00	1	f
+19	7	Москва	2024-06-06 11:00:00	Aeroflot	2 часа	51000	0	2024-06-06 13:00:00	5	t
+20	8	Санкт-Петербург	2024-06-07 08:00:00	S7	5 часов	70000	2	2024-06-07 13:00:00	5	t
+21	9	Москва	2024-06-08 10:00:00	Уральские авиалинии	4 часа	58000	1	2024-06-08 14:00:00	6	f
+22	10	Екатеринбург	2024-06-09 13:00:00	S7	4 часа	57000	1	2024-06-09 17:00:00	1	t
+1	2	Липецк	2024-05-31 00:00:00	S7	12 ч	15000	2	2024-05-31 00:00:00	5	t
+2	3	Липецк	2024-05-31 00:00:00	S7	12 ч	15000	0	2024-05-31 00:00:00	1	t
+3	2	Липецк	2024-05-31 00:00:00	S7	12 ч	15000	1	2024-05-31 00:00:00	2	f
+15	3	Санкт-Петербург	2024-06-02 10:00:00	S7	2 часа	51000	0	2024-06-02 12:00:00	10	f
+16	4	Новосибирск	2024-06-03 12:00:00	Уральские авиалинии	3 часа	55000	1	2024-06-03 15:00:00	4	t
+17	5	Екатеринбург	2024-06-04 14:00:00	S7	3 часа	56000	1	2024-06-04 17:00:00	3	t
 \.
 
 
@@ -355,7 +347,7 @@ COPY public.flight (id_flight, id_user, from_flight, date_dep_flight, airline_fl
 --
 
 COPY public.places (id_place, photo_place, name_place, url_place, favorites_count, id_city, desc_place) FROM stdin;
-14	\N	Красная площадь, Кремль, Большой театр	https://www.kreml.ru	1500	1	Исторические и архитектурные символы России, представляющие богатую культурную историю Москвы.
+14	\N	Красная площадь, Кремль, Большой театр	https://www.kreml.ru	1501	1	Исторические и архитектурные символы России, представляющие богатую культурную историю Москвы.
 15	\N	Эрмитаж, Дворцовая площадь, Петропавловская крепость	https://www.hermitagemuseum.org	1200	2	Знаменитые музеи и исторические памятники, отражающие богатство культурного наследия Санкт-Петербурга.
 16	\N	Зоопарк, Новосибирский музей краеведения, Новосибирская городская скульптура	https://nskzoo.ru	800	3	Интересные места и аттракции, предлагаемые к посещению в Новосибирске.
 17	\N	Центральный парк культуры и отдыха им. В. В. Маяковского, Плотинка	https://www.ekatmuseum.ru	700	4	Зеленые зоны отдыха и культурные места в Екатеринбурге, привлекающие местных жителей и туристов.
@@ -399,7 +391,6 @@ COPY public.users (id_user, full_name_user, email_user, password_user, role_user
 13	Дмитрий Михайлов	dmitry@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	t	\N	\N	\N
 14	Екатерина Новикова	ekaterina@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	f	\N	\N	\N
 15	Дьяков Дмитрий Владимирович	example@bk.ru	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	f	\N	\N	\N
-2	Болдырев Максим Романович	yaz678@bk.ru	5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5	user	/empty.svg	t	\N	\N	2024-05-31
 3	Кретов Игорь Олегович	knigor1337@gmail.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	t	\N	\N	2024-05-31
 4	Толстунов Владимир Дмитриевич	r.vladimir.tolstunov@gmail.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	t	\N	\N	2024-05-31
 5	Иван Иванов	ivan@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	t	\N	\N	\N
@@ -407,6 +398,7 @@ COPY public.users (id_user, full_name_user, email_user, password_user, role_user
 7	Александр Сидоров	alex@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	t	\N	\N	\N
 8	Елена Смирнова	elena@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	f	\N	\N	\N
 9	Андрей Кузнецов	andrey@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	t	\N	\N	\N
+2	НеБолдырев Максим Романович	maxrox1904@gmail.com	307fd56085a6ed891cfb2c38276d7853b122968754378f1153e0127f3a764a0f	user	/20240531194345.jpg	t	9802695322	1990-01-01	2024-05-31
 \.
 
 
@@ -421,14 +413,14 @@ SELECT pg_catalog.setval('public.city_id_city_seq', 20, true);
 -- Name: favorites_id_favorites_seq; Type: SEQUENCE SET; Schema: public; Owner: user
 --
 
-SELECT pg_catalog.setval('public.favorites_id_favorites_seq', 6, true);
+SELECT pg_catalog.setval('public.favorites_id_favorites_seq', 8, true);
 
 
 --
 -- Name: flight_id_flight_seq; Type: SEQUENCE SET; Schema: public; Owner: user
 --
 
-SELECT pg_catalog.setval('public.flight_id_flight_seq', 23, true);
+SELECT pg_catalog.setval('public.flight_id_flight_seq', 24, true);
 
 
 --

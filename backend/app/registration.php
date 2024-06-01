@@ -31,8 +31,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         } else {
      
+    //  // Хеширование пароля
+    //  $hashedPassword = hash('sha256', $password);
+                // Set default photo_user value
 
-            // Set default photo_user value
+                
             $photo_user = '/empty.svg';
 
             $data = [

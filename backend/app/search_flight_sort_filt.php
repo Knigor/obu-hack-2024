@@ -20,6 +20,7 @@ $date_dep_flight = $_POST['date_dep_flight'];
 $amount_passengers = $_POST['amount_passengers'];
 $sort_by = $_POST['sort_by'];
 $amount_stops = isset($_POST['amount_stops']) ? $_POST['amount_stops'] : null;
+$airlines = isset($_POST['airlines']) ? $_POST['airlines'] : null;
 
 // Проверка формата даты
 $date_format = 'Y-m-d';
@@ -63,6 +64,11 @@ try {
             $query .= " AND f.amount_stops = :amount_stops";
         }
 
+        // Добавление фильтрации по авиалиниям, если указаны
+        if (!empty($airlines)) {
+            $query .= " AND f.airline_flight = :airline_flight";
+        }
+
         // Добавление сортировки
         switch ($sort_by) {
             case 'cheap':
@@ -91,6 +97,11 @@ try {
         // Добавление параметра количества остановок, если указано
         if ($amount_stops !== null) {
             $params['amount_stops'] = $amount_stops;
+        }
+
+        // Добавление параметра авиалиний, если указаны
+        if (!empty($airlines)) {
+            $params['airline_flight'] = $airlines;
         }
 
         $statement->execute($params);

@@ -6,7 +6,7 @@ import store from './store'
 import MainPage from './views/MainPage.vue'
 import authPage from './views/authPage.vue'
 import registerPage from './views/registerPage.vue'
-
+import profilePage from './views/profilePage.vue'
 const router = createRouter({
   routes: [
     {
@@ -20,6 +20,10 @@ const router = createRouter({
     {
       path: '/registerPage',
       component: registerPage
+    },
+    {
+      path: '/profilePage',
+      component: profilePage
     }
   ],
   history: createWebHistory()

@@ -8,7 +8,7 @@
       <div class="flex gap-2 items-center" v-if="isVisible">
         <img class="w-[30px] h-[30px]" :src="`http://localhost:8080/img/${avatar}`" />
         <p>{{ user }}</p>
-        <Button variant="link">Профиль</Button>
+        <Button @click="goToProfile" variant="link">Профиль</Button>
         <Button @click="outUser" class="w-[50px] ml-2" variant="link">Выйти</Button>
       </div>
       <Button v-else @click="authPage" class="w-[50px] ml-2" variant="link">Войти</Button>
@@ -46,7 +46,11 @@ const outUser = async () => {
   localStorage.clear()
 }
 
-const authPage = async () => {
+const goToProfile = () => {
+  router.push('/profilePage')
+}
+
+const authPage = () => {
   router.push('/authPage')
 }
 </script>

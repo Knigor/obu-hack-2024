@@ -16,7 +16,7 @@ try {
 // Запрос к базе данных
 $query = "
     SELECT c.id_city, c.name_city, c.amount_views_city, f.from_flight, f.date_dep_flight,
-           f.airline_flight, f.time_taken_flight, f.price, f.amount_stops, f.date_arr_flight
+           f.airline_flight, f.time_taken_flight, f.price, f.amount_stops, f.date_arr_flight, f.econom_class
     FROM city c
     LEFT JOIN flight f ON c.id_city = f.id_city
     ORDER BY c.amount_views_city DESC

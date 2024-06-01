@@ -20,7 +20,7 @@ function getPlacesInfo($id_city) {
     global $db;
     try {
         // Подготовка запроса
-        $stmt = $db->prepare("SELECT photo_place, desc_place, url_place, favorites_count FROM places WHERE id_city = :id_city");
+        $stmt = $db->prepare("SELECT photo_place, desc_place, favorites_count FROM places WHERE id_city = :id_city");
         // Привязка параметров
         $stmt->bindParam(':id_city', $id_city);
         // Выполнение запроса

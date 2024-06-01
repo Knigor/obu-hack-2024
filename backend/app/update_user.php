@@ -5,13 +5,19 @@ $dbname = 'obu-hack-2024';
 $dbuser = 'user';
 $dbpass = 'user';
 
+header('Content-Type: application/json');
+
+$response = array();
+
 try {
     $pdo = new PDO("pgsql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
     ]);
 } catch (PDOException $e) {
-    die("Ошибка подключения к базе данных: " . $e->getMessage());
+    $response['error'] = "Ошибка подключения к базе данных: " . $e->getMessage();
+    echo json_encode($response);
+    exit;
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -27,7 +33,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (verifyOldPassword($id_user, $old_password)) {
             $password = hash("sha256", $new_password); // Хешируем новый пароль
         } else {
-            die("Введен неправильный старый пароль.");
+            $response['error'] = "Введен неправильный старый пароль.";
+            echo json_encode($response);
+            exit;
         }
     }
 
@@ -43,7 +51,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($photo && $photo["error"] == UPLOAD_ERR_OK) {
         $photo_name = uploadImage($photo);
         if (!$photo_name) {
-            die("Ошибка при загрузке изображения.");
+            $response['error'] = "Ошибка при загрузке изображения.";
+            echo json_encode($response);
+            exit;
         }
         // Добавляем слеш перед именем файла
         $photo_name = '/'.$photo_name;
@@ -53,10 +63,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Обновляем данные пользователя
     if (updateUser($id_user, $full_name, $email, $password, $photo_name, $news_mailing, $phone, $birth)) {
-        echo "Данные пользователя успешно обновлены.";
+        $response['message'] = "Данные пользователя успешно обновлены.";
     } else {
-        echo "Ошибка при обновлении данных пользователя.";
+        $response['error'] = "Ошибка при обновлении данных пользователя.";
     }
+    echo json_encode($response);
 }
 
 function updateUser($user_id, $full_name, $email, $password, $photo, $news_mailing, $phone, $birth)

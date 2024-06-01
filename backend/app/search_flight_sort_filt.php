@@ -18,12 +18,21 @@ $from_flight = $_POST['from_flight'];
 $name_city = $_POST['name_city'];
 $date_dep_flight = $_POST['date_dep_flight'];
 $amount_passengers = $_POST['amount_passengers'];
+$sort_by = $_POST['sort_by'];
+$amount_stops = isset($_POST['amount_stops']) ? $_POST['amount_stops'] : null;
 
 // Проверка формата даты
 $date_format = 'Y-m-d';
 $d = DateTime::createFromFormat($date_format, $date_dep_flight);
 if (!$d || $d->format($date_format) !== $date_dep_flight) {
     echo json_encode(array('error' => 'Неправильный формат даты. Используйте YYYY-MM-DD.'));
+    exit;
+}
+
+// Проверка сортировки
+$allowed_sort = array('cheap', 'exp', 'arr', 'dep');
+if (!in_array($sort_by, $allowed_sort)) {
+    echo json_encode(array('error' => 'Неправильный критерий сортировки.'));
     exit;
 }
 
@@ -47,15 +56,44 @@ try {
             FROM city c
             LEFT JOIN flight f ON c.id_city = f.id_city
             WHERE f.from_flight = :from_flight AND c.id_city = :id_city AND f.date_dep_flight = :date_dep_flight
-            ORDER BY c.amount_views_city DESC
         ";
 
+        // Добавление фильтрации по количеству остановок, если указано
+        if ($amount_stops !== null) {
+            $query .= " AND f.amount_stops = :amount_stops";
+        }
+
+        // Добавление сортировки
+        switch ($sort_by) {
+            case 'cheap':
+                $query .= " ORDER BY f.price ASC";
+                break;
+            case 'exp':
+                $query .= " ORDER BY f.price DESC";
+                break;
+            case 'arr':
+                $query .= " ORDER BY f.date_dep_flight ASC";
+                break;
+            case 'dep':
+                $query .= " ORDER BY f.date_arr_flight ASC";
+                break;
+        }
+
         $statement = $pdo->prepare($query);
-        $statement->execute(array(
+
+        // Установка параметров запроса
+        $params = array(
             'from_flight' => $from_flight,
             'id_city' => $id_city,
             'date_dep_flight' => $date_dep_flight
-        ));
+        );
+
+        // Добавление параметра количества остановок, если указано
+        if ($amount_stops !== null) {
+            $params['amount_stops'] = $amount_stops;
+        }
+
+        $statement->execute($params);
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         // Если есть результаты, вычисляем стоимость с учетом количества пассажиров

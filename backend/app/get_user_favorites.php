@@ -1,9 +1,4 @@
 <?php
-
-header('Access-Control-Allow-Origin: http://localhost:5173');
-header('Access-Control-Allow-Headers: Content-Type');
-header('Access-Control-Allow-Methods: POST');
-header('Access-Control-Allow-Methods: GET');
 // Настройки подключения к базе данных
 $dbhost = 'postgres-db';
 $dbname = 'obu-hack-2024';
@@ -48,11 +43,12 @@ if ($id_user) {
         $stmt->execute(['id_user' => $id_user]);
         $results = $stmt->fetchAll();
 
-        if ($results) {
-            echo json_encode(['status' => 'success', 'data' => $results]);
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'No favorites found for this user']);
-        }
+   if ($results) {
+    $total_count = count($results); // Подсчет количества объектов
+    echo json_encode(['status' => 'success', 'total_count' => $total_count, 'data' => $results]);
+} else {
+    echo json_encode(['status' => 'error', 'message' => 'No favorites found for this user']);
+}
     } catch (\PDOException $e) {
         echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
     }

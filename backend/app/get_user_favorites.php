@@ -27,7 +27,7 @@ if ($id_user) {
             p.id_place, 
             p.name_place, 
             p.desc_place, 
-        
+            p.photo_place,
             p.favorites_count, 
             p.id_city
         FROM 

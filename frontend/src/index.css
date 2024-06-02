@@ -15,7 +15,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 0 0% 98%;
     --foreground: 240 10% 3.9%;
 
     --card: 0 0% 100%;
@@ -83,4 +83,17 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Пользовательские стили */
+h2 {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 36px;
+}
+
+h3 {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
 }

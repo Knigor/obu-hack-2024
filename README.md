@@ -2,7 +2,7 @@
 
 ## Дизайн проекта - https://clck.ru/3AzowS
 
-## Презентация проекта - `https://docs.google.com/presentation/d/1beMFL7enuccZz_yBYAZSrmXwkbHnabfTAJUEkL0fMpE/edit#slide=id.g2e20c13be55_5_105)`
+## Презентация проекта - https://docs.google.com/presentation/d/1beMFL7enuccZz_yBYAZSrmXwkbHnabfTAJUEkL0fMpE/edit#slide=id.g2e20c13be55_5_105
 
 ## Иструкция по запуску проекта
 

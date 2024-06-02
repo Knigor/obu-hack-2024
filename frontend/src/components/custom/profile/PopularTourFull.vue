@@ -1,18 +1,18 @@
 <template>
   <article class="flex flex-col min-h-[600px] max-h-[600px] gap-2 p-4 w-full">
-    <header class="p-0 flex flex-col w-full gap-4">
+    <header class="flex flex-col w-full gap-4">
       <div
-        class="rounded-xl self-center w-full min-h-[128px] max-h-[128px] bg-center"
+        class="rounded-xl self-center w-full min-h-[128px] max-h-[128px] bg-cover bg-center"
         :class="calcImageURL"
       ></div>
       <h3>{{ tourName }}</h3>
     </header>
-    <div class="p-0 overflow-hidden">
+    <div class="overflow-hidden h-full">
       <ScrollArea class="max-h-full h-full overflow-hidden pr-2">
         {{ tourDescription }}
       </ScrollArea>
     </div>
-    <footer class="p-0 flex gap-4 justify-end">
+    <footer class="p-0 flex gap-4 items-end justify-end">
       <Button @click="$emit('flyTo')">Лететь сюда</Button>
     </footer>
   </article>

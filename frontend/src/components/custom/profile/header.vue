@@ -7,7 +7,10 @@
       'rounded-bl-[999px]': !isCalculatorOpened
     }"
   >
-    <div @click="goToMain" class="flex items-center gap-2 ml-12 cursor-pointer">
+    <div
+      @click="goToMain"
+      class="flex items-center gap-2 ml-12 cursor-pointer hover:bg-gray-200 transition-colors rounded-2xl px-4 py-1"
+    >
       <Plane color="green" />
       <p class="text-2xl text-green-900 font-semibold">5-fly</p>
     </div>

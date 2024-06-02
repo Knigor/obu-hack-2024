@@ -1,38 +1,27 @@
 <template>
-  <article class="flex max-h-[212px]">
-    <Card class="flex gap-4 p-4">
-      <div class="flex flex-col gap-2">
-        <CardHeader class="p-0">
-          <CardTitle>{{ cardHeaderText }}</CardTitle>
-        </CardHeader>
-        <CardContent class="p-0 max-h-full overflow-hidden">
-          {{ cardDescriptionText }}
-        </CardContent>
-        <CardFooter class="flex gap-4 p-0">
-          <Button class="gap-2"><Heart /> {{ cardLikesAmount }}</Button>
-          <Dialog>
-            <DialogTrigger as-child>
-              <Button variant="ghost">Подробнее</Button>
-            </DialogTrigger>
-            <DialogContent class="sm:max-w-[600px]">
-              <FavoritePlaceFull></FavoritePlaceFull>
-            </DialogContent>
-          </Dialog>
-        </CardFooter>
-      </div>
+  <article class="flex min-h-[600px] max-h-[600px] w-full gap-4 p-4">
+    <div class="flex flex-col gap-4">
+      <header class="flex justify-between">
+        <h2>{{ cardHeaderText }}</h2>
+      </header>
       <div
-        class="rounded-xl self-center min-w-[162px] max-w-[162px] min-h-[162px] max-h-[162px] bg-center bg-[url(https://place-hold.it/256px)]"
+        class="rounded-xl self-center w-full min-h-[128px] max-h-[128px] bg-center bg-cover bg-[url(https://place-hold.it/256px)]"
       ></div>
-    </Card>
+      <div class="h-full max-h-full overflow-hidden">
+        <ScrollArea class="max-h-full h-full overflow-hidden pr-2">
+          {{ cardDescriptionText }}
+        </ScrollArea>
+      </div>
+      <footer class="flex w-full justify-end items-end">
+        <Button class="gap-2"><Heart /> {{ cardLikesAmount }}</Button>
+      </footer>
+    </div>
   </article>
 </template>
 
 <script setup>
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import Button from '@/components/ui/button/Button.vue'
-
-import FavoritePlaceFull from './FavoritePlaceFull.vue'
+import ScrollArea from '@/components/ui/scroll-area/ScrollArea.vue'
 
 import { ref } from 'vue'
 import { Heart } from 'lucide-vue-next'

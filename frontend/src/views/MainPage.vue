@@ -1,13 +1,13 @@
 <template>
-  <div class="flex flex-col gap-8 justify-center">
+  <div class="flex flex-col gap-8 justify-center items-center w-full">
     <!-- Шапка сайта -->
-    <div class="flex flex-col">
+    <div class="flex flex-col w-full">
       <Header :is-calculator-opened="true" />
       <!-- Поле полей ввода -->
       <div
-        class="flex flex-col gap-6 items-center justify-center shadow-md rounded-br-[999px] rounded-bl-[999px] bg-white pb-8"
+        class="flex flex-col gap-6 items-center justify-center shadow-md rounded-br-[100px] rounded-bl-[100px] bg-white pb-8"
       >
-        <h1 class="text-xl font-semibold">Куда летим?</h1>
+        <h2>Куда летим?</h2>
         <div class="flex flex-col gap-6">
           <!-- Первая строка параметров -->
           <div class="flex justify-between">
@@ -199,11 +199,43 @@
       </div>
     </div>
     <!-- Область просмотра -->
-    <div class="flex flex-col">
+    <div class="flex flex-col max-w-[800px] gap-8 pb-16">
+      <!-- Карточка с вычисленной ценой -->
+      <div class="flex justify-center items-center w-full">
+        <div class="flex flex-col items-start gap-4 w-full">
+          <h3>Результат подсчёта</h3>
+          <Card class="flex items-center w-full gap-2">
+            <div class="px-12 py-6 bg-green-300 rounded-tl-lg rounded-bl-lg">
+              <p class="text-xl font-bold text-nowrap">12 345 ₽</p>
+            </div>
+            <!-- Выравнивание столбцов -->
+            <div class="flex items-center w-full px-4">
+              <!-- Первый столбец -->
+              <div class="flex flex-col gap-2 w-full items-center">
+                <div class="flex gap-2 font-medium w-full">
+                  <PlaneTakeoff />Из {{ cityNames[fromCityPosition] }}
+                </div>
+                <div class="flex gap-2 font-medium w-full">
+                  <PlaneLanding />В {{ cityNames[toCityPosition] }}
+                </div>
+              </div>
+              <!-- Второй столбец -->
+              <div class="flex flex-col gap-2 w-full">
+                <div class="flex gap-2 font-medium w-full">
+                  <ArrowLeftRight />{{ airCompaniesNames[airCompanyPosition] }}
+                </div>
+                <div class="flex gap-2 font-medium w-full">
+                  <BaggageClaim />{{ classNames[classPlane] }}
+                </div>
+              </div>
+            </div>
+          </Card>
+        </div>
+      </div>
       <!-- Популярные направления -->
-      <div v-if="visiblePopular" class="flex justify-center items-center">
+      <div v-if="visiblePopular" class="flex justify-center items-center w-full">
         <div class="flex flex-col items-start gap-4">
-          <h3>Популярные направления</h3>
+          <h3>Популярные места в {{ cityNames[toCityPosition] }}</h3>
           <!-- Фильтры и сортировка -->
           <div class="flex flex-wrap gap-4">
             <DropdownMenu>
@@ -240,7 +272,58 @@
           </div>
           <!-- TODO: подумать, действительно ли необходим скролл или можно всё в одну линию выстроить -->
           <!-- Просмотр популярных направлений -->
-          <ScrollArea class="h-[800px] w-[850px] rounded-md border p-4">
+          <!-- <ScrollArea class="h-[800px] w-full rounded-md border p-4"> -->
+          <div class="flex flex-col gap-4 w-full">
+            <FavoritePlace></FavoritePlace>
+            <FavoritePlace></FavoritePlace>
+            <FavoritePlace></FavoritePlace>
+          </div>
+          <!-- </ScrollArea> -->
+        </div>
+      </div>
+      <!-- Популярные направления -->
+      <div v-if="visiblePopular" class="flex justify-center items-center w-full">
+        <div class="flex flex-col items-start gap-4">
+          <h3>Популярные направления</h3>
+          <!-- TODO: ПОДУМАТЬ, НУЖНЫ ЛИ ФИЛЬТРЫ ИМЕННО ДЛЯ ПОПНАПРАВЛЕНИЙ ИЛИ ХВАТИТ ДЛЯ ПОПМЕСТ -->
+          <!-- Фильтры и сортировка -->
+          <!-- <div class="flex flex-wrap gap-4">
+            <DropdownMenu>
+              <DropdownMenuTrigger as-child>
+                <Button class="flex gap-2" variant="outline">
+                  <Filter /> {{ filterRoute[filter] }}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent class="w-56">
+                <DropdownMenuLabel>Фильтрация</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuRadioGroup v-model="filter">
+                  <DropdownMenuRadioItem value="S7"> S7 </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="AeroFlot"> Аэрофлот </DropdownMenuRadioItem>
+                </DropdownMenuRadioGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger as-child>
+                <Button class="flex gap-2" variant="outline">
+                  <ArrowDownUp /> {{ sortRoute[sort] }}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent class="w-56">
+                <DropdownMenuLabel>Сортировка</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuRadioGroup v-model="sort">
+                  <DropdownMenuRadioItem value="cheap"> Сначала дешевые </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="exp"> Сначала дорогие </DropdownMenuRadioItem>
+                </DropdownMenuRadioGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div> -->
+          <!-- TODO: подумать, действительно ли необходим скролл или можно всё в одну линию выстроить -->
+          <!-- Просмотр популярных направлений -->
+          <!-- <ScrollArea class="h-[800px] w-full rounded-md border p-4"> -->
+          <div class="flex flex-col w-full">
             <div class="flex gap-4">
               <PopularTour
                 tour-name="Бангалор"
@@ -253,7 +336,8 @@
                 tour-image-u-r-l="https://place-hold.it/256px"
               ></PopularTour>
             </div>
-          </ScrollArea>
+          </div>
+          <!-- </ScrollArea> -->
         </div>
       </div>
     </div>
@@ -263,14 +347,23 @@
 <script setup>
 import Header from '../components/custom/profile/header.vue'
 import PopularTour from '@/components/custom/profile/PopularTour.vue'
+import FavoritePlace from '@/components/custom/profile/FavoritePlace.vue'
 import { ref, onMounted } from 'vue'
 import { DateFormatter, getLocalTimeZone } from '@internationalized/date'
+import { Card } from '@/components/ui/card'
 
-import { Calendar as CalendarIcon, ArrowLeftRight, Calculator } from 'lucide-vue-next'
+import {
+  Calendar as CalendarIcon,
+  ArrowLeftRight,
+  Calculator,
+  PlaneLanding,
+  PlaneTakeoff,
+  BaggageClaim,
+  Plane
+} from 'lucide-vue-next'
 import { Calendar } from '@/components/ui/calendar'
 import { Button } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { Input } from '@/components/ui/input'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -401,6 +494,7 @@ const minusStopsCount = () => {
   if (countStops.value > 1) countStops.value--
 }
 
+// Меняем город отправления и прибытия местами
 const swapCities = () => {
   let tempPos = fromCityPosition.value
   fromCityPosition.value = toCityPosition.value
@@ -411,5 +505,3 @@ const df = new DateFormatter('ru', {
   dateStyle: 'long'
 })
 </script>
-
-<style lang="scss" scoped></style>

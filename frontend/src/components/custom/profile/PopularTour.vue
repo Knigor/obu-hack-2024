@@ -16,7 +16,7 @@
           <DialogTrigger as-child>
             <Button variant="ghost">Подробнее</Button>
           </DialogTrigger>
-          <DialogContent class="sm:max-w-[425px]">
+          <DialogContent class="sm:max-w-[600px]">
             <PopularTourFull
               :tour-name="tourName"
               :tour-description="tourDescription"

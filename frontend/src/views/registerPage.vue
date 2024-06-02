@@ -19,7 +19,7 @@
     </div>
 
     <div class="flex flex-col items-center gap-4 ml-24 mr-12">
-      <h1 class="font-bold">Зарегистрируйтесь</h1>
+      <h2>Зарегистрируйтесь</h2>
       <div class="border-t h-5 w-96 border-green-600"></div>
 
       <div class="grid w-full max-w-sm items-center gap-1.5">

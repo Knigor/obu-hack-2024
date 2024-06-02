@@ -28,7 +28,8 @@ CREATE TABLE public.city (
     id_city integer NOT NULL,
     name_city character varying(100),
     amount_views_city integer,
-    photo_city character varying
+    photo_city character varying,
+    desc_city text
 );
 
 
@@ -403,13 +404,13 @@ ALTER TABLE ONLY public.users ALTER COLUMN id_user SET DEFAULT nextval('public.u
 -- Data for Name: city; Type: TABLE DATA; Schema: public; Owner: user
 --
 
-COPY public.city (id_city, name_city, amount_views_city, photo_city) FROM stdin;
-21	Бангалор	80	/bango.jpg
-26	Мумбаи	130	/mumba.jpg
-22	Ченнаи	90	/chen.jpg
-23	Дели	100	/deli.jpg
-24	Хайдарабад	110	hai.jpg
-25	Калькутта	120	/kaljut.jpg
+COPY public.city (id_city, name_city, amount_views_city, photo_city, desc_city) FROM stdin;
+26	Мумбаи	130	/mumba.jpg	Мумбаи, финансовая столица Индии, известен своими небоскрёбами, Болливудом и оживленным уличным рынком.
+22	Ченнаи	90	/chen.jpg	Ченнаи, крупный город на юго-востоке Индии, славится своими храмами, пляжами и богатым культурным наследием.
+23	Дели	100	/deli.jpg	Дели, столица Индии, сочетает в себе древние памятники и современные архитектурные шедевры, а также является политическим центром страны.
+24	Хайдарабад	110	hai.jpg	Хайдарабад, город с богатой историей, известен своими IT-индустриями и знаменитыми бирьяни.
+25	Калькутта	120	/kaljut.jpg	Калькутта, культурная столица Индии, славится своей литературной и художественной средой, а также архитектурой колониального периода.
+21	Бангалор	81	/bango.jpg	Бангалор, известный как "Силиконовая долина Индии", является крупным IT-центром с множеством технологических компаний и стартапов.
 \.
 
 
@@ -442,6 +443,7 @@ COPY public.flight (id_flight, id_user, from_flight, date_dep_flight, airline_fl
 COPY public.ml_request (id_ml_request, price_request, class_request, position_request, amount_stops_request, date_arr_request, date_dep_request, id_user, id_city) FROM stdin;
 1	1500	Zero	Moscow	1	2024-06-01 00:00:00	2024-05-31 00:00:00	2	\N
 2	1500	Zero	Moscow	1	2024-06-01 00:00:00	2024-05-31 00:00:00	2	21
+3	1500	Zero	Moscow	1	2024-06-01 00:00:00	2024-05-31 00:00:00	2	21
 \.
 
 
@@ -453,6 +455,7 @@ COPY public.ml_request_history (id_user, id_ml_request, view_date, id_ml_history
 2	1	2024-06-01	1
 3	1	2024-06-01	2
 2	1	2024-06-01	3
+3	1	2024-06-02	36
 \.
 
 
@@ -461,24 +464,24 @@ COPY public.ml_request_history (id_user, id_ml_request, view_date, id_ml_history
 --
 
 COPY public.places (id_place, photo_place, name_place, url_place, favorites_count, id_city, desc_place) FROM stdin;
-1	/garden_bangalore.jpg	Ботанический сад Лалбагх	https://example.com/lalbagh	0	21	Красивый ботанический сад в Бангалоре.
-2	/temple_mumbai.jpg	Храм Шри Сиддхивинаяк	https://example.com/siddhivinayak	0	26	Знаменитый индуистский храм в Мумбаи.
-3	/beach_chennai.jpg	Пляж Марина	https://example.com/marina_beach	0	22	Самый длинный пляж в Ченнаи.
-4	/tomb_delhi.jpg	Гробница Хумаюна	https://example.com/humayuns_tomb	0	23	Историческая гробница в Дели.
-5	/fort_hyderabad.jpg	Форт Голконда	https://example.com/golconda	0	24	Древний форт в Хайдарабаде.
-6	/memorial_kolkata.jpg	Виктория Мемориал	https://example.com/victoria_memorial	0	25	Великолепное мраморное строение в Калькутте.
-7	/palace_bangalore.jpg	Дворец Бангалора	https://example.com/bangalore_palace	0	21	Великолепный дворец в Бангалоре.
-8	/gateway_mumbai.jpg	Ворота Индии	https://example.com/gateway_of_india	0	26	Знаковый памятник в Мумбаи.
-9	/fort_chennai.jpg	Форт Сент-Джордж	https://example.com/fort_st_george	0	22	Исторический форт в Ченнаи.
-10	/qutub_delhi.jpg	Кутб-Минар	https://example.com/qutub_minar	0	23	Иконический минарет в Дели.
-11	/charminar_hyderabad.jpg	Чарминар	https://example.com/charminar	0	24	Знаменитая мечеть в Хайдарабаде.
-12	/bridge_kolkata.jpg	Мост Хаура	https://example.com/howrah_bridge	0	25	Знаменитый мост в Калькутте.
-14	/cave_mumbai.jpg	Пещеры Элефанта	https://example.com/elephanta_caves	0	26	Древние пещеры на острове близ Мумбаи.
-15	/temple_chennai.jpg	Храм Капалешварар	https://example.com/kapaleeshwarar_temple	0	22	Величественный храм в Ченнаи.
-16	/temple_delhi.jpg	Храм Лотоса	https://example.com/lotus_temple	0	23	Современный храм в форме лотоса в Дели.
-17	/museum_hyderabad.jpg	Салар Джунг Музей	https://example.com/salar_jung_museum	0	24	Известный музей в Хайдарабаде.
-18	/park_kolkata.jpg	Парк Миллениум	https://example.com/millennium_park	0	25	Красивый парк на набережной Калькутты.
-13	/temple_bangalore.jpg	Храм Булл	https://example.com/bull_temple	1	21	Известный храм в Бангалоре, посвященный быку Нанди.
+1	/garden_bangalore.jpg	Ботанический сад Лалбагх	https://example.com/lalbagh	5	21	Красивый ботанический сад в Бангалоре.
+2	/temple_mumbai.jpg	Храм Шри Сиддхивинаяк	https://example.com/siddhivinayak	6	26	Знаменитый индуистский храм в Мумбаи.
+3	/beach_chennai.jpg	Пляж Марина	https://example.com/marina_beach	20	22	Самый длинный пляж в Ченнаи.
+4	/tomb_delhi.jpg	Гробница Хумаюна	https://example.com/humayuns_tomb	30	23	Историческая гробница в Дели.
+5	/fort_hyderabad.jpg	Форт Голконда	https://example.com/golconda	43	24	Древний форт в Хайдарабаде.
+6	/memorial_kolkata.jpg	Виктория Мемориал	https://example.com/victoria_memorial	11	25	Великолепное мраморное строение в Калькутте.
+7	/palace_bangalore.jpg	Дворец Бангалора	https://example.com/bangalore_palace	22	21	Великолепный дворец в Бангалоре.
+8	/gateway_mumbai.jpg	Ворота Индии	https://example.com/gateway_of_india	66	26	Знаковый памятник в Мумбаи.
+9	/fort_chennai.jpg	Форт Сент-Джордж	https://example.com/fort_st_george	12	22	Исторический форт в Ченнаи.
+10	/qutub_delhi.jpg	Кутб-Минар	https://example.com/qutub_minar	16	23	Иконический минарет в Дели.
+11	/charminar_hyderabad.jpg	Чарминар	https://example.com/charminar	15	24	Знаменитая мечеть в Хайдарабаде.
+12	/bridge_kolkata.jpg	Мост Хаура	https://example.com/howrah_bridge	21	25	Знаменитый мост в Калькутте.
+14	/cave_mumbai.jpg	Пещеры Элефанта	https://example.com/elephanta_caves	23	26	Древние пещеры на острове близ Мумбаи.
+15	/temple_chennai.jpg	Храм Капалешварар	https://example.com/kapaleeshwarar_temple	25	22	Величественный храм в Ченнаи.
+16	/temple_delhi.jpg	Храм Лотоса	https://example.com/lotus_temple	29	23	Современный храм в форме лотоса в Дели.
+17	/museum_hyderabad.jpg	Салар Джунг Музей	https://example.com/salar_jung_museum	31	24	Известный музей в Хайдарабаде.
+18	/park_kolkata.jpg	Парк Миллениум	https://example.com/millennium_park	23	25	Красивый парк на набережной Калькутты.
+13	/temple_bangalore.jpg	Храм Булл	https://example.com/bull_temple	88	21	Известный храм в Бангалоре, посвященный быку Нанди.
 \.
 
 
@@ -537,7 +540,7 @@ SELECT pg_catalog.setval('public.flight_id_flight_seq', 24, true);
 -- Name: ml_request_history_id_ml_history_new_seq; Type: SEQUENCE SET; Schema: public; Owner: user
 --
 
-SELECT pg_catalog.setval('public.ml_request_history_id_ml_history_new_seq', 35, true);
+SELECT pg_catalog.setval('public.ml_request_history_id_ml_history_new_seq', 36, true);
 
 
 --
@@ -551,7 +554,7 @@ SELECT pg_catalog.setval('public.ml_request_history_id_ml_history_seq', 1, false
 -- Name: ml_request_id_ml_request_seq; Type: SEQUENCE SET; Schema: public; Owner: user
 --
 
-SELECT pg_catalog.setval('public.ml_request_id_ml_request_seq', 2, true);
+SELECT pg_catalog.setval('public.ml_request_id_ml_request_seq', 3, true);
 
 
 --

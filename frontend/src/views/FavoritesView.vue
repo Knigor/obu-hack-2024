@@ -1,5 +1,5 @@
 <template>
-  <section class="flex flex-col gap-6">
+  <section class="flex flex-col gap-6 pb-16">
     <h3>Всего {{ placesAmount }} мест</h3>
     <div v-for="item in items" :key="item.id_place" class="flex flex-col gap-4">
       <div class="flex gap-4">

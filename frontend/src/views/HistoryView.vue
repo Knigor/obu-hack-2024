@@ -1,5 +1,5 @@
 <template>
-  <section class="flex flex-col gap-6 w-full">
+  <section class="flex flex-col gap-6 w-full pb-16">
     <div class="flex flex-col gap-2">
       <h3>Вы искали раньше</h3>
       <p>

@@ -70,25 +70,7 @@
               <!-- Вылет -->
               <div class="flex flex-col gap-1">
                 <p>Вылетаем</p>
-                <Popover>
-                  <PopoverTrigger as-child>
-                    <Button
-                      variant="outline"
-                      :class="
-                        cn(
-                          'w-full justify-start text-left font-normal',
-                          !value && 'text-muted-foreground'
-                        )
-                      "
-                    >
-                      <CalendarIcon class="mr-2 h-4 w-4" />
-                      {{ value ? df.format(value.toDate(getLocalTimeZone())) : 'Выберите дату' }}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent class="w-auto p-0">
-                    <Calendar v-model="value" initial-focus />
-                  </PopoverContent>
-                </Popover>
+
                 <div class="flex gap-1 items-center">
                   <Popover>
                     <PopoverTrigger as-child>
@@ -103,9 +85,14 @@
                       <Calendar v-model="valueTo" initial-focus />
                     </PopoverContent>
                   </Popover>
-                  <Input type="numbert" class="w-14 text-center" placeholder="ЧЧ" />
+                  <Input
+                    type="numbert"
+                    v-model="hourTo"
+                    class="w-14 text-center"
+                    placeholder="ЧЧ"
+                  />
                   <p>:</p>
-                  <Input type="numbert" class="w-14 text-center" placeholder="ММ" />
+                  <Input type="numbert" v-model="minTo" class="w-14 text-center" placeholder="ММ" />
                 </div>
               </div>
               <!-- Посадка -->
@@ -127,9 +114,19 @@
                       <Calendar v-model="valueBack" initial-focus />
                     </PopoverContent>
                   </Popover>
-                  <Input type="numbert" class="w-14 text-center" placeholder="ЧЧ" />
+                  <Input
+                    type="numbert"
+                    v-model="hourBack"
+                    class="w-14 text-center"
+                    placeholder="ЧЧ"
+                  />
                   <p>:</p>
-                  <Input type="numbert" class="w-14 text-center" placeholder="ММ" />
+                  <Input
+                    type="numbert"
+                    v-model="minBack"
+                    class="w-14 text-center"
+                    placeholder="ММ"
+                  />
                 </div>
               </div>
             </div>
@@ -460,8 +457,14 @@ const classPlane = ref('Default')
 const countPeople = ref(1)
 const countStops = ref(0)
 
-const value = ref()
+const valueTo = ref()
 const valueBack = ref()
+
+const hourTo = ref()
+const minTo = ref()
+
+const hourBack = ref()
+const minBack = ref()
 
 // запрос на популярные данные из БД
 
@@ -487,14 +490,18 @@ let visiblePopular = ref(true)
 const searchTicket = async () => {
   console.log('КЛИК')
 
+  console.log(valueTo.value.year)
+  console.log(valueTo.value.month)
+  console.log(valueTo.value.day)
+
   const data = {
     position: fromCityPosition.value,
     positionTo: toCityPosition.value,
     classPlane: classPlane.value,
     airCompany: airCompanyPosition.value,
     countStops: countStops.value,
-    depFrom: '2024-06-03 12:00',
-    depTO: '2024-06-03 19:30'
+    depFrom: `${valueTo.value.year}-${valueTo.value.month}-${valueTo.value.day} ${hourTo.value}:${minTo.value}`,
+    depTO: `${valueBack.value.year}-${valueBack.value.month}-${valueBack.value.day} ${hourBack.value}:${minBack.value}`
   }
 
   console.log(data)

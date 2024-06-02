@@ -24,7 +24,7 @@ try {
 // Обработка POST-запроса
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Проверка наличия всех необходимых параметров
-    $required_fields = ['price_request', 'class_request', 'position_request', 'city_name', 'amount_stops_request', 'date_arr_request', 'date_dep_request', 'id_user'];
+    $required_fields = ['price_request', 'class_request', 'position_request', 'name_city', 'amount_stops_request', 'date_arr_request', 'date_dep_request', 'id_user'];
     foreach ($required_fields as $field) {
         if (!isset($_POST[$field])) {
             echo json_encode(['status' => 'error', 'message' => "Отсутствует обязательный параметр: $field"]);
@@ -33,8 +33,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Поиск id_city по названию города
-    $city_name = $_POST['city_name'];
-    $city_sql = "SELECT id_city FROM city WHERE name_city = ?";
+    $city_name = $_POST['name_city'];
+    $city_sql = "SELECT id_city, amount_views_city FROM city WHERE name_city = ?";
     try {
         $city_stmt = $pdo->prepare($city_sql);
         $city_stmt->execute([$city_name]);
@@ -46,8 +46,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         
         $id_city = $city['id_city'];
+        $amount_views_city = isset($city['amount_views_city']) ? $city['amount_views_city'] + 1 : 1;
+
+        // Увеличение счетчика amount_views_city на 1
+        $update_city_sql = "UPDATE city SET amount_views_city = ? WHERE id_city = ?";
+        $update_city_stmt = $pdo->prepare($update_city_sql);
+        $update_city_stmt->execute([$amount_views_city, $id_city]);
     } catch (PDOException $e) {
-        echo json_encode(['status' => 'error', 'message' => 'Ошибка при поиске города: ' . $e->getMessage()]);
+        echo json_encode(['status' => 'error', 'message' => 'Ошибка при обновлении счетчика города: ' . $e->getMessage()]);
         exit;
     }
 

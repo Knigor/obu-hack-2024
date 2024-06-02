@@ -37,7 +37,7 @@
 
 1. Для начала вам необходимо запустить наш сервер на Docker и подключить нашу базу данных
 
-2. Заходите в Postman по `https://www.postman.com/notfive/workspace/notfive-workspace/overview`
+2. Заходите в Postman по `https://www.postman.com/notfive/workspace/notfive-workspace/overview` или ищите команду `notFive` в и переходите на `notFive Workspace`
 3. Вас интересует obu_hack, выбираете его
 4. Делайте форк и можете тестировать ( тестировать в браузере нельзя )
 

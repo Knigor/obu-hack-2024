@@ -1,38 +1,70 @@
 <?php
-// Настройки подключения к базе данных
+
+header('Access-Control-Allow-Origin: http://localhost:5173');
+header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Methods: POST');
+header('Access-Control-Allow-Methods: GET');
+
+// Параметры подключения к базе данных PostgreSQL
 $dbhost = 'postgres-db';
 $dbname = 'obu-hack-2024';
 $dbuser = 'user';
 $dbpass = 'user';
 
+// Подключение к базе данных
 try {
-    $pdo = new PDO("pgsql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        PDO::ATTR_EMULATE_PREPARES => false,
-    ]);
-} catch (\PDOException $e) {
-    throw new \PDOException($e->getMessage(), (int)$e->getCode());
+    $db = new PDO("pgsql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch(PDOException $e) {
+    echo json_encode(array('error' => 'Ошибка подключения к базе данных: ' . $e->getMessage()));
+    exit;
 }
 
-// Получение параметра id_city из POST-запроса
-$id_city = isset($_POST['id_city']) ? (int)$_POST['id_city'] : 0;
+// Функция для получения информации о местах по id города с возможностью сортировки и фильтрации
+function getPlacesInfo($id_city, $sort_by, $filter, $id_user) {
+    global $db;
+    try {
+        // Подготовка запроса с сортировкой и фильтрацией
+        $order = $sort_by === 'up' ? 'ASC' : 'DESC';
+        $filter_condition = '';
+        $filter_params = array(':id_city' => $id_city);
+        
+        if ($filter === 'fav') {
+            $filter_condition = 'AND p.id_place IN (SELECT id_place FROM favorites WHERE id_user = :id_user)';
+            $filter_params[':id_user'] = $id_user;
+        } elseif ($filter === 'nofav') {
+            $filter_condition = 'AND p.id_place NOT IN (SELECT id_place FROM favorites WHERE id_user = :id_user)';
+            $filter_params[':id_user'] = $id_user;
+        }
+        
+        $stmt = $db->prepare("SELECT photo_place, desc_place, favorites_count FROM places p WHERE id_city = :id_city $filter_condition ORDER BY favorites_count $order");
+        
+        // Привязка параметров
+        foreach ($filter_params as $param => $value) {
+            $stmt->bindParam($param, $value);
+        }
+        
+        // Выполнение запроса
+        $stmt->execute();
+        // Получение результатов
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // Возвращение результатов в формате JSON
+        return json_encode($results);
+    } catch(PDOException $e) {
+        return json_encode(array('error' => 'Ошибка выполнения запроса: ' . $e->getMessage()));
+    }
+}
 
-if ($id_city > 0) {
-    // Запрос к базе данных
-    $stmt = $pdo->prepare('SELECT photo_place, name_place, url_place, favorites_count, desc_place
-                           FROM places
-                           WHERE id_city = :id_city
-                           ORDER BY favorites_count DESC');
-    $stmt->execute(['id_city' => $id_city]);
-    $places = $stmt->fetchAll();
-
-    // Возврат результата в формате JSON
-    header('Content-Type: application/json');
-    echo json_encode($places);
+// Проверка наличия параметров id_city и sort_by в POST запросе
+if(isset($_POST['id_city']) && isset($_POST['sort_by'])) {
+    $id_city = $_POST['id_city'];
+    $sort_by = $_POST['sort_by'];
+    $filter = isset($_POST['filter']) ? $_POST['filter'] : 'no'; // Параметр фильтрации
+    $id_user = isset($_POST['id_user']) ? $_POST['id_user'] : null; // ID пользователя для фильтрации по избранным местам
+    // Получение информации о местах по id города с сортировкой, фильтрацией и вывод в формате JSON
+    echo getPlacesInfo($id_city, $sort_by, $filter, $id_user);
 } else {
-    // Возврат ошибки, если id_city не указан или неверен
-    header('HTTP/1.1 400 Bad Request');
-    echo json_encode(['error' => 'Invalid or missing id_city']);
+    // В случае отсутствия параметров id_city или sort_by выдаем ошибку
+    echo json_encode(array('error' => 'Параметры id_city и sort_by отсутствуют'));
 }
 ?>

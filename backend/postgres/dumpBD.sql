@@ -134,6 +134,47 @@ ALTER SEQUENCE public.flight_id_flight_seq OWNED BY public.flight.id_flight;
 
 
 --
+-- Name: ml_request; Type: TABLE; Schema: public; Owner: user
+--
+
+CREATE TABLE public.ml_request (
+    id_ml_request integer NOT NULL,
+    price_request numeric,
+    class_request character varying(255),
+    position_request character varying(255),
+    positionto_request character varying(255),
+    amount_stops_request integer,
+    date_arr_request timestamp without time zone,
+    date_dep_request timestamp without time zone,
+    id_user integer
+);
+
+
+ALTER TABLE public.ml_request OWNER TO "user";
+
+--
+-- Name: ml_request_id_ml_request_seq; Type: SEQUENCE; Schema: public; Owner: user
+--
+
+CREATE SEQUENCE public.ml_request_id_ml_request_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.ml_request_id_ml_request_seq OWNER TO "user";
+
+--
+-- Name: ml_request_id_ml_request_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: user
+--
+
+ALTER SEQUENCE public.ml_request_id_ml_request_seq OWNED BY public.ml_request.id_ml_request;
+
+
+--
 -- Name: places; Type: TABLE; Schema: public; Owner: user
 --
 
@@ -272,6 +313,13 @@ ALTER TABLE ONLY public.flight ALTER COLUMN id_flight SET DEFAULT nextval('publi
 
 
 --
+-- Name: ml_request id_ml_request; Type: DEFAULT; Schema: public; Owner: user
+--
+
+ALTER TABLE ONLY public.ml_request ALTER COLUMN id_ml_request SET DEFAULT nextval('public.ml_request_id_ml_request_seq'::regclass);
+
+
+--
 -- Name: places id_place; Type: DEFAULT; Schema: public; Owner: user
 --
 
@@ -315,8 +363,8 @@ COPY public.city (id_city, name_city, amount_views_city) FROM stdin;
 --
 
 COPY public.favorites (id_favorites, id_place, id_user) FROM stdin;
-5	14	2
-8	14	2
+10	14	2
+12	24	2
 \.
 
 
@@ -339,6 +387,14 @@ COPY public.flight (id_flight, id_user, from_flight, date_dep_flight, airline_fl
 15	3	Санкт-Петербург	2024-06-02 10:00:00	S7	2 часа	51000	0	2024-06-02 12:00:00	10	f
 16	4	Новосибирск	2024-06-03 12:00:00	Уральские авиалинии	3 часа	55000	1	2024-06-03 15:00:00	4	t
 17	5	Екатеринбург	2024-06-04 14:00:00	S7	3 часа	56000	1	2024-06-04 17:00:00	3	t
+\.
+
+
+--
+-- Data for Name: ml_request; Type: TABLE DATA; Schema: public; Owner: user
+--
+
+COPY public.ml_request (id_ml_request, price_request, class_request, position_request, positionto_request, amount_stops_request, date_arr_request, date_dep_request, id_user) FROM stdin;
 \.
 
 
@@ -413,7 +469,7 @@ SELECT pg_catalog.setval('public.city_id_city_seq', 20, true);
 -- Name: favorites_id_favorites_seq; Type: SEQUENCE SET; Schema: public; Owner: user
 --
 
-SELECT pg_catalog.setval('public.favorites_id_favorites_seq', 8, true);
+SELECT pg_catalog.setval('public.favorites_id_favorites_seq', 12, true);
 
 
 --
@@ -421,6 +477,13 @@ SELECT pg_catalog.setval('public.favorites_id_favorites_seq', 8, true);
 --
 
 SELECT pg_catalog.setval('public.flight_id_flight_seq', 24, true);
+
+
+--
+-- Name: ml_request_id_ml_request_seq; Type: SEQUENCE SET; Schema: public; Owner: user
+--
+
+SELECT pg_catalog.setval('public.ml_request_id_ml_request_seq', 1, false);
 
 
 --
@@ -450,6 +513,14 @@ SELECT pg_catalog.setval('public.users_id_user_seq', 15, true);
 
 ALTER TABLE ONLY public.city
     ADD CONSTRAINT city_pkey PRIMARY KEY (id_city);
+
+
+--
+-- Name: ml_request ml_request_pkey; Type: CONSTRAINT; Schema: public; Owner: user
+--
+
+ALTER TABLE ONLY public.ml_request
+    ADD CONSTRAINT ml_request_pkey PRIMARY KEY (id_ml_request);
 
 
 --
@@ -608,6 +679,14 @@ ALTER TABLE ONLY public.request_history
 
 ALTER TABLE ONLY public.flight
     ADD CONSTRAINT flight_id_city_fkey FOREIGN KEY (id_city) REFERENCES public.city(id_city);
+
+
+--
+-- Name: ml_request ml_request_id_user_fkey; Type: FK CONSTRAINT; Schema: public; Owner: user
+--
+
+ALTER TABLE ONLY public.ml_request
+    ADD CONSTRAINT ml_request_id_user_fkey FOREIGN KEY (id_user) REFERENCES public.users(id_user);
 
 
 --

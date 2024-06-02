@@ -50,7 +50,7 @@
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent class="w-56">
-                    <DropdownMenuLabel>Откуда</DropdownMenuLabel>
+                    <DropdownMenuLabel>Куда</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuRadioGroup v-model="toCityPosition">
                       <DropdownMenuRadioItem value="Bangalore"> Бангалор </DropdownMenuRadioItem>
@@ -331,7 +331,7 @@
                 tour-image-u-r-l="https://place-hold.it/256px"
               ></PopularTour>
               <PopularTour
-                tour-name="Дели"
+                :tour-name="aboba"
                 tour-description="И нет сомнений, что представители современных социальных резервов формируют глобальную экономическую сеть и при этом — функционально разнесены на независимые элементы. Предварительные выводы неутешительны: глубокий уровень погружения создаёт предпосылки для инновационных методов управления процессами.И нет сомнений, что представители современных социальных резервов формируют глобальную экономическую сеть и при этом — функционально разнесены на независимые элементы. Предварительные выводы неутешительны: глубокий уровень погружения создаёт предпосылки для инновационных методов управления процессами."
                 tour-image-u-r-l="https://place-hold.it/256px"
               ></PopularTour>
@@ -377,6 +377,8 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { ArrowDownUp } from 'lucide-vue-next'
 import { Filter } from 'lucide-vue-next'
 import axios from 'axios'
+
+const aboba = ref('абоба')
 
 const cityNames = {
   Default: 'Выберите город',
@@ -426,7 +428,7 @@ const airCompanyPosition = ref('Default')
 const classPlane = ref('Default')
 
 const countPeople = ref(1)
-const countStops = ref(1)
+const countStops = ref(0)
 
 const valueTo = ref()
 const valueBack = ref()
@@ -487,11 +489,11 @@ const minusPeopleCount = () => {
 }
 
 const plusStopsCount = () => {
-  if (countStops.value < 9) countStops.value++
+  if (countStops.value < 2) countStops.value++
 }
 
 const minusStopsCount = () => {
-  if (countStops.value > 1) countStops.value--
+  if (countStops.value > 0) countStops.value--
 }
 
 // Меняем город отправления и прибытия местами

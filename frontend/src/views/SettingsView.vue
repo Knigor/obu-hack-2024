@@ -51,20 +51,16 @@
           <div class="flex gap-6 flex-col w-full">
             <div class="flex justify-between items-center">
               <h3>Безопасность</h3>
-              <Button>Обновить</Button>
+              <Button @click="setNewPassword">Обновить</Button>
             </div>
             <div class="flex flex-col gap-3">
               <div class="flex gap-4 items-center">
                 <p class="w-[112px]">Текущий пароль</p>
-                <Input
-                  type="password"
-                  placeholder="Ваш текущий пароль..."
-                  v-bind="componentField"
-                />
+                <Input type="password" placeholder="Ваш текущий пароль..." v-model="oldPassword" />
               </div>
               <div class="flex gap-4 items-center">
                 <p class="w-[112px]">Новый пароль</p>
-                <Input type="password" placeholder="Ваш новый пароль..." v-bind="componentField" />
+                <Input type="password" placeholder="Ваш новый пароль..." v-model="newPassword" />
               </div>
             </div>
           </div>
@@ -74,8 +70,7 @@
           <div class="flex flex-col gap-4">
             <h3>Изменение фото</h3>
             <Avatar class="w-[128px] h-[128px] rounded-2xl">
-              <AvatarImage :src="`http://localhost:8080/img/${item.photo_user}`" alt="@radix-vue" />
-              <AvatarFallback>CN</AvatarFallback>
+              <AvatarImage :src="`http://localhost:8080/img/${item.photo_user}`" />
             </Avatar>
 
             <div class="flex items-center justify-center w-full">
@@ -160,14 +155,45 @@ const value = ref()
 const fio = ref()
 const email = ref()
 const phone = ref()
+const oldPassword = ref()
+const newPassword = ref()
+const photoName = ref(null)
 
 const handleCoverUpload = (event) => {
   const file = event.target.files[0]
   if (file) {
     coverImage.value = file
+    photoName.value = file.name
     console.log('Выбранное изображение:', file.name)
   }
 }
+
+const setNewPassword = async () => {
+  const formData = new FormData()
+  formData.append('id_user', localStorage.id_user)
+  formData.append('old_password', oldPassword.value)
+  formData.append('new_password', newPassword.value)
+
+  try {
+    const response = await axios.post('http://localhost:8080/update_user.php', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+
+    console.log(response.data)
+
+    if (response.data && response.data.error) {
+      alert('Введен неправильный старый пароль.')
+    }
+
+    getProfile()
+  } catch (error) {
+    console.error('Ошибка при отправке данных:', error)
+  }
+}
+
+// снизу обновляется личная информация
 
 const saveData = async () => {
   const formData = new FormData()
@@ -175,6 +201,7 @@ const saveData = async () => {
 
   if (fio.value) {
     formData.append('full_name', fio.value)
+    localStorage.setItem('full_name', fio.value)
   }
   if (email.value) {
     formData.append('email', email.value)
@@ -193,17 +220,21 @@ const saveData = async () => {
     console.log(pair[0] + ': ' + pair[1])
   }
 
-  // try {
-  //   const response = await axios.post('http://localhost/add-book', formData, {
-  //     headers: {
-  //       'Content-Type': 'multipart/form-data'
-  //     }
-  //   })
+  try {
+    const response = await axios.post('http://localhost:8080/update_user.php', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
 
-  //   console.log(response.data)
-  // } catch (error) {
-  //   console.error('Ошибка при отправке данных:', error)
-  // }
+    console.log(response.data)
+
+    // localStorage.setItem('photo_user', response.data.photo_user)
+
+    getProfile()
+  } catch (error) {
+    console.error('Ошибка при отправке данных:', error)
+  }
 }
 
 const getProfile = async () => {
@@ -219,6 +250,8 @@ const getProfile = async () => {
     })
 
     item.value = response.data
+
+    localStorage.setItem('photo_user', response.data.photo_user)
 
     console.log(response.data)
   } catch (error) {

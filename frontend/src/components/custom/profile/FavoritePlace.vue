@@ -33,13 +33,7 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import Button from '@/components/ui/button/Button.vue'
 import axios from 'axios'
 
-<<<<<<< HEAD
 import { ref, onMounted } from 'vue'
-=======
-import FavoritePlaceFull from './FavoritePlaceFull.vue'
-import { ref, onMounted } from 'vue'
-
->>>>>>> 000f39fdbbd7df728eabc39fe5637af648776256
 import { Heart } from 'lucide-vue-next'
 
 const cardHeaderText = ref('Московский кремль')

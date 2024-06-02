@@ -27,7 +27,8 @@ SET default_table_access_method = heap;
 CREATE TABLE public.city (
     id_city integer NOT NULL,
     name_city character varying(100),
-    amount_views_city integer
+    amount_views_city integer,
+    photo_city character varying
 );
 
 
@@ -104,7 +105,8 @@ CREATE TABLE public.flight (
     price integer,
     amount_stops integer,
     date_arr_flight timestamp without time zone,
-    id_city integer
+    id_city integer,
+    econom_class boolean
 );
 
 
@@ -130,6 +132,98 @@ ALTER TABLE public.flight_id_flight_seq OWNER TO "user";
 --
 
 ALTER SEQUENCE public.flight_id_flight_seq OWNED BY public.flight.id_flight;
+
+
+--
+-- Name: ml_request; Type: TABLE; Schema: public; Owner: user
+--
+
+CREATE TABLE public.ml_request (
+    id_ml_request integer NOT NULL,
+    price_request numeric,
+    class_request character varying(255),
+    position_request character varying(255),
+    amount_stops_request integer,
+    date_arr_request timestamp without time zone,
+    date_dep_request timestamp without time zone,
+    id_user integer,
+    id_city integer
+);
+
+
+ALTER TABLE public.ml_request OWNER TO "user";
+
+--
+-- Name: ml_request_history; Type: TABLE; Schema: public; Owner: user
+--
+
+CREATE TABLE public.ml_request_history (
+    id_user integer,
+    id_ml_request integer,
+    view_date date,
+    id_ml_history integer NOT NULL
+);
+
+
+ALTER TABLE public.ml_request_history OWNER TO "user";
+
+--
+-- Name: ml_request_history_id_ml_history_new_seq; Type: SEQUENCE; Schema: public; Owner: user
+--
+
+CREATE SEQUENCE public.ml_request_history_id_ml_history_new_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.ml_request_history_id_ml_history_new_seq OWNER TO "user";
+
+--
+-- Name: ml_request_history_id_ml_history_new_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: user
+--
+
+ALTER SEQUENCE public.ml_request_history_id_ml_history_new_seq OWNED BY public.ml_request_history.id_ml_history;
+
+
+--
+-- Name: ml_request_history_id_ml_history_seq; Type: SEQUENCE; Schema: public; Owner: user
+--
+
+CREATE SEQUENCE public.ml_request_history_id_ml_history_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.ml_request_history_id_ml_history_seq OWNER TO "user";
+
+--
+-- Name: ml_request_id_ml_request_seq; Type: SEQUENCE; Schema: public; Owner: user
+--
+
+CREATE SEQUENCE public.ml_request_id_ml_request_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.ml_request_id_ml_request_seq OWNER TO "user";
+
+--
+-- Name: ml_request_id_ml_request_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: user
+--
+
+ALTER SEQUENCE public.ml_request_id_ml_request_seq OWNED BY public.ml_request.id_ml_request;
 
 
 --
@@ -271,6 +365,20 @@ ALTER TABLE ONLY public.flight ALTER COLUMN id_flight SET DEFAULT nextval('publi
 
 
 --
+-- Name: ml_request id_ml_request; Type: DEFAULT; Schema: public; Owner: user
+--
+
+ALTER TABLE ONLY public.ml_request ALTER COLUMN id_ml_request SET DEFAULT nextval('public.ml_request_id_ml_request_seq'::regclass);
+
+
+--
+-- Name: ml_request_history id_ml_history; Type: DEFAULT; Schema: public; Owner: user
+--
+
+ALTER TABLE ONLY public.ml_request_history ALTER COLUMN id_ml_history SET DEFAULT nextval('public.ml_request_history_id_ml_history_new_seq'::regclass);
+
+
+--
 -- Name: places id_place; Type: DEFAULT; Schema: public; Owner: user
 --
 
@@ -295,27 +403,13 @@ ALTER TABLE ONLY public.users ALTER COLUMN id_user SET DEFAULT nextval('public.u
 -- Data for Name: city; Type: TABLE DATA; Schema: public; Owner: user
 --
 
-COPY public.city (id_city, name_city, amount_views_city) FROM stdin;
-1	Москва	100
-2	Санкт-Петербург	80
-3	Новосибирск	60
-4	Екатеринбург	50
-5	Нижний Новгород	40
-6	Казань	45
-7	Челябинск	35
-8	Омск	30
-9	Самара	55
-10	Ростов-на-Дону	70
-11	Москва	100
-12	Санкт-Петербург	80
-13	Новосибирск	60
-14	Екатеринбург	50
-15	Нижний Новгород	40
-16	Казань	45
-17	Челябинск	35
-18	Омск	30
-19	Самара	55
-20	Ростов-на-Дону	70
+COPY public.city (id_city, name_city, amount_views_city, photo_city) FROM stdin;
+21	Бангалор	80	/bango.jpg
+26	Мумбаи	130	/mumba.jpg
+22	Ченнаи	90	/chen.jpg
+23	Дели	100	/deli.jpg
+24	Хайдарабад	110	hai.jpg
+25	Калькутта	120	/kaljut.jpg
 \.
 
 
@@ -324,8 +418,12 @@ COPY public.city (id_city, name_city, amount_views_city) FROM stdin;
 --
 
 COPY public.favorites (id_favorites, id_place, id_user) FROM stdin;
-5	14	2
-6	15	2
+13	8	2
+14	9	2
+15	15	3
+16	14	2
+17	18	2
+19	13	2
 \.
 
 
@@ -333,20 +431,28 @@ COPY public.favorites (id_favorites, id_place, id_user) FROM stdin;
 -- Data for Name: flight; Type: TABLE DATA; Schema: public; Owner: user
 --
 
-COPY public.flight (id_flight, id_user, from_flight, date_dep_flight, airline_flight, time_taken_flight, price, amount_stops, date_arr_flight, id_city) FROM stdin;
-2	3	Липецк	2024-05-31 00:00:00	S7	12 ч	15000	\N	\N	1
-3	2	Липецк	2024-05-31 00:00:00	S7	12 ч	15000	\N	\N	2
-1	2	Липецк	2024-05-31 00:00:00	S7	12 ч	15000	\N	2024-05-31 00:00:00	5
-14	2	Москва	2024-06-01 08:00:00	Аэрофлот	2 часа	50000	0	2024-06-01 10:00:00	6
-15	3	Санкт-Петербург	2024-06-02 10:00:00	S7	2 часа	51000	0	2024-06-02 12:00:00	20
-16	4	Новосибирск	2024-06-03 12:00:00	Уральские авиалинии	3 часа	55000	1	2024-06-03 15:00:00	14
-17	5	Екатеринбург	2024-06-04 14:00:00	S7	3 часа	56000	1	2024-06-04 17:00:00	13
-18	6	Ростов-на-Дону	2024-06-05 09:00:00	Победа	2 часа	52000	0	2024-06-05 11:00:00	11
-19	7	Москва	2024-06-06 11:00:00	Аэрофлот	2 часа	51000	0	2024-06-06 13:00:00	15
-20	8	Санкт-Петербург	2024-06-07 08:00:00	S7	5 часов	70000	2	2024-06-07 13:00:00	5
-21	9	Москва	2024-06-08 10:00:00	Уральские авиалинии	4 часа	58000	1	2024-06-08 14:00:00	6
-22	10	Екатеринбург	2024-06-09 13:00:00	S7	4 часа	57000	1	2024-06-09 17:00:00	1
-23	2	Москва	2024-06-10 15:00:00	Аэрофлот	2 часа	50000	0	2024-06-10 17:00:00	2
+COPY public.flight (id_flight, id_user, from_flight, date_dep_flight, airline_flight, time_taken_flight, price, amount_stops, date_arr_flight, id_city, econom_class) FROM stdin;
+\.
+
+
+--
+-- Data for Name: ml_request; Type: TABLE DATA; Schema: public; Owner: user
+--
+
+COPY public.ml_request (id_ml_request, price_request, class_request, position_request, amount_stops_request, date_arr_request, date_dep_request, id_user, id_city) FROM stdin;
+1	1500	Zero	Moscow	1	2024-06-01 00:00:00	2024-05-31 00:00:00	2	\N
+2	1500	Zero	Moscow	1	2024-06-01 00:00:00	2024-05-31 00:00:00	2	21
+\.
+
+
+--
+-- Data for Name: ml_request_history; Type: TABLE DATA; Schema: public; Owner: user
+--
+
+COPY public.ml_request_history (id_user, id_ml_request, view_date, id_ml_history) FROM stdin;
+2	1	2024-06-01	1
+3	1	2024-06-01	2
+2	1	2024-06-01	3
 \.
 
 
@@ -355,17 +461,24 @@ COPY public.flight (id_flight, id_user, from_flight, date_dep_flight, airline_fl
 --
 
 COPY public.places (id_place, photo_place, name_place, url_place, favorites_count, id_city, desc_place) FROM stdin;
-14	\N	Красная площадь, Кремль, Большой театр	https://www.kreml.ru	1500	1	Исторические и архитектурные символы России, представляющие богатую культурную историю Москвы.
-15	\N	Эрмитаж, Дворцовая площадь, Петропавловская крепость	https://www.hermitagemuseum.org	1200	2	Знаменитые музеи и исторические памятники, отражающие богатство культурного наследия Санкт-Петербурга.
-16	\N	Зоопарк, Новосибирский музей краеведения, Новосибирская городская скульптура	https://nskzoo.ru	800	3	Интересные места и аттракции, предлагаемые к посещению в Новосибирске.
-17	\N	Центральный парк культуры и отдыха им. В. В. Маяковского, Плотинка	https://www.ekatmuseum.ru	700	4	Зеленые зоны отдыха и культурные места в Екатеринбурге, привлекающие местных жителей и туристов.
-18	\N	Кремль, Вечный огонь, Кладбище 90-й гвардейской дивизии	https://nnovgorod.net	600	5	Исторические места и памятники в Нижнем Новгороде, связанные с Великой Отечественной войной.
-19	\N	Казанский кремль, Казанский университет, Музей натуральной истории	https://kzn.ru	500	6	Культурные и архитектурные объекты, являющиеся символами города Казани.
-20	\N	Шатровая гора, Сузгун, Набережная Чебаркуля	https://chelmuseum.ru	450	7	Природные достопримечательности и зоны отдыха в Челябинске, популярные среди местных жителей и туристов.
-21	\N	Парк имени 30-летия Победы, Парк культуры и отдыха Омский	https://omsktown.ru	400	8	Парки и зеленые зоны отдыха в Омске, предлагающие возможности для активного времяпрепровождения.
-22	\N	Аквапарк "Акварель", Стадион "Самара-Арена", Зоопарк	https://www.samaratoday.ru	550	9	Развлекательные и культурные объекты в Самаре, привлекающие как местных жителей, так и туристов.
-23	\N	Парк Горького, Заповедник "Ростовский", Парк Активного Отдыха "Зеленый Остров"	https://www.visitrostovregion.ru	900	10	Парки и природные зоны отдыха в Ростове-на-Дону, предлагающие возможности для отдыха и активного времяпрепровождения.
-24	\N	Парк Горького, Третьяковская галерея, ВДНХ	https://www.mosgorpark.ru	1300	1	Парк Горького - центральный парк культуры и отдыха, Третьяковская галерея - главный музей русского изобразительного искусства, ВДНХ - выставочный центр с множеством павильонов и аттракционов.
+1	/garden_bangalore.jpg	Ботанический сад Лалбагх	https://example.com/lalbagh	0	21	Красивый ботанический сад в Бангалоре.
+2	/temple_mumbai.jpg	Храм Шри Сиддхивинаяк	https://example.com/siddhivinayak	0	26	Знаменитый индуистский храм в Мумбаи.
+3	/beach_chennai.jpg	Пляж Марина	https://example.com/marina_beach	0	22	Самый длинный пляж в Ченнаи.
+4	/tomb_delhi.jpg	Гробница Хумаюна	https://example.com/humayuns_tomb	0	23	Историческая гробница в Дели.
+5	/fort_hyderabad.jpg	Форт Голконда	https://example.com/golconda	0	24	Древний форт в Хайдарабаде.
+6	/memorial_kolkata.jpg	Виктория Мемориал	https://example.com/victoria_memorial	0	25	Великолепное мраморное строение в Калькутте.
+7	/palace_bangalore.jpg	Дворец Бангалора	https://example.com/bangalore_palace	0	21	Великолепный дворец в Бангалоре.
+8	/gateway_mumbai.jpg	Ворота Индии	https://example.com/gateway_of_india	0	26	Знаковый памятник в Мумбаи.
+9	/fort_chennai.jpg	Форт Сент-Джордж	https://example.com/fort_st_george	0	22	Исторический форт в Ченнаи.
+10	/qutub_delhi.jpg	Кутб-Минар	https://example.com/qutub_minar	0	23	Иконический минарет в Дели.
+11	/charminar_hyderabad.jpg	Чарминар	https://example.com/charminar	0	24	Знаменитая мечеть в Хайдарабаде.
+12	/bridge_kolkata.jpg	Мост Хаура	https://example.com/howrah_bridge	0	25	Знаменитый мост в Калькутте.
+14	/cave_mumbai.jpg	Пещеры Элефанта	https://example.com/elephanta_caves	0	26	Древние пещеры на острове близ Мумбаи.
+15	/temple_chennai.jpg	Храм Капалешварар	https://example.com/kapaleeshwarar_temple	0	22	Величественный храм в Ченнаи.
+16	/temple_delhi.jpg	Храм Лотоса	https://example.com/lotus_temple	0	23	Современный храм в форме лотоса в Дели.
+17	/museum_hyderabad.jpg	Салар Джунг Музей	https://example.com/salar_jung_museum	0	24	Известный музей в Хайдарабаде.
+18	/park_kolkata.jpg	Парк Миллениум	https://example.com/millennium_park	0	25	Красивый парк на набережной Калькутты.
+13	/temple_bangalore.jpg	Храм Булл	https://example.com/bull_temple	1	21	Известный храм в Бангалоре, посвященный быку Нанди.
 \.
 
 
@@ -374,17 +487,6 @@ COPY public.places (id_place, photo_place, name_place, url_place, favorites_coun
 --
 
 COPY public.request_history (id_request_history, id_user, id_flight, view_date) FROM stdin;
-1	2	1	2024-05-31
-2	2	14	2024-05-31
-3	3	15	2024-05-31
-4	4	16	2024-05-31
-5	5	17	2024-05-31
-6	6	18	2024-05-31
-7	7	19	2024-05-31
-8	8	20	2024-05-31
-9	9	21	2024-05-31
-10	10	22	2024-05-31
-11	11	23	2024-05-31
 \.
 
 
@@ -399,7 +501,6 @@ COPY public.users (id_user, full_name_user, email_user, password_user, role_user
 13	Дмитрий Михайлов	dmitry@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	t	\N	\N	\N
 14	Екатерина Новикова	ekaterina@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	f	\N	\N	\N
 15	Дьяков Дмитрий Владимирович	example@bk.ru	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	f	\N	\N	\N
-2	Болдырев Максим Романович	yaz678@bk.ru	5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5	user	/empty.svg	t	\N	\N	2024-05-31
 3	Кретов Игорь Олегович	knigor1337@gmail.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	t	\N	\N	2024-05-31
 4	Толстунов Владимир Дмитриевич	r.vladimir.tolstunov@gmail.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	t	\N	\N	2024-05-31
 5	Иван Иванов	ivan@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	t	\N	\N	\N
@@ -407,6 +508,7 @@ COPY public.users (id_user, full_name_user, email_user, password_user, role_user
 7	Александр Сидоров	alex@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	t	\N	\N	\N
 8	Елена Смирнова	elena@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	f	\N	\N	\N
 9	Андрей Кузнецов	andrey@example.com	a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3	user	/empty.svg	t	\N	\N	\N
+2	НеБолдырев Максим Романович	maxrox1904@gmail.com	307fd56085a6ed891cfb2c38276d7853b122968754378f1153e0127f3a764a0f	user	/20240531194345.jpg	t	9802695322	1990-01-01	2024-05-31
 \.
 
 
@@ -414,21 +516,42 @@ COPY public.users (id_user, full_name_user, email_user, password_user, role_user
 -- Name: city_id_city_seq; Type: SEQUENCE SET; Schema: public; Owner: user
 --
 
-SELECT pg_catalog.setval('public.city_id_city_seq', 20, true);
+SELECT pg_catalog.setval('public.city_id_city_seq', 26, true);
 
 
 --
 -- Name: favorites_id_favorites_seq; Type: SEQUENCE SET; Schema: public; Owner: user
 --
 
-SELECT pg_catalog.setval('public.favorites_id_favorites_seq', 6, true);
+SELECT pg_catalog.setval('public.favorites_id_favorites_seq', 19, true);
 
 
 --
 -- Name: flight_id_flight_seq; Type: SEQUENCE SET; Schema: public; Owner: user
 --
 
-SELECT pg_catalog.setval('public.flight_id_flight_seq', 23, true);
+SELECT pg_catalog.setval('public.flight_id_flight_seq', 24, true);
+
+
+--
+-- Name: ml_request_history_id_ml_history_new_seq; Type: SEQUENCE SET; Schema: public; Owner: user
+--
+
+SELECT pg_catalog.setval('public.ml_request_history_id_ml_history_new_seq', 35, true);
+
+
+--
+-- Name: ml_request_history_id_ml_history_seq; Type: SEQUENCE SET; Schema: public; Owner: user
+--
+
+SELECT pg_catalog.setval('public.ml_request_history_id_ml_history_seq', 1, false);
+
+
+--
+-- Name: ml_request_id_ml_request_seq; Type: SEQUENCE SET; Schema: public; Owner: user
+--
+
+SELECT pg_catalog.setval('public.ml_request_id_ml_request_seq', 2, true);
 
 
 --
@@ -458,6 +581,22 @@ SELECT pg_catalog.setval('public.users_id_user_seq', 15, true);
 
 ALTER TABLE ONLY public.city
     ADD CONSTRAINT city_pkey PRIMARY KEY (id_city);
+
+
+--
+-- Name: ml_request_history ml_request_history_pkey; Type: CONSTRAINT; Schema: public; Owner: user
+--
+
+ALTER TABLE ONLY public.ml_request_history
+    ADD CONSTRAINT ml_request_history_pkey PRIMARY KEY (id_ml_history);
+
+
+--
+-- Name: ml_request ml_request_pkey; Type: CONSTRAINT; Schema: public; Owner: user
+--
+
+ALTER TABLE ONLY public.ml_request
+    ADD CONSTRAINT ml_request_pkey PRIMARY KEY (id_ml_request);
 
 
 --
@@ -571,6 +710,14 @@ CREATE UNIQUE INDEX user_pk ON public.users USING btree (id_user);
 
 
 --
+-- Name: ml_request fk_city; Type: FK CONSTRAINT; Schema: public; Owner: user
+--
+
+ALTER TABLE ONLY public.ml_request
+    ADD CONSTRAINT fk_city FOREIGN KEY (id_city) REFERENCES public.city(id_city);
+
+
+--
 -- Name: favorites fk_favorite_are_inclu_places; Type: FK CONSTRAINT; Schema: public; Owner: user
 --
 
@@ -595,6 +742,22 @@ ALTER TABLE ONLY public.flight
 
 
 --
+-- Name: ml_request_history fk_ml_request_history_ml_request; Type: FK CONSTRAINT; Schema: public; Owner: user
+--
+
+ALTER TABLE ONLY public.ml_request_history
+    ADD CONSTRAINT fk_ml_request_history_ml_request FOREIGN KEY (id_ml_request) REFERENCES public.ml_request(id_ml_request) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: ml_request_history fk_ml_request_history_user; Type: FK CONSTRAINT; Schema: public; Owner: user
+--
+
+ALTER TABLE ONLY public.ml_request_history
+    ADD CONSTRAINT fk_ml_request_history_user FOREIGN KEY (id_user) REFERENCES public.users(id_user) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
 -- Name: request_history fk_request__has_users; Type: FK CONSTRAINT; Schema: public; Owner: user
 --
 
@@ -616,6 +779,14 @@ ALTER TABLE ONLY public.request_history
 
 ALTER TABLE ONLY public.flight
     ADD CONSTRAINT flight_id_city_fkey FOREIGN KEY (id_city) REFERENCES public.city(id_city);
+
+
+--
+-- Name: ml_request ml_request_id_user_fkey; Type: FK CONSTRAINT; Schema: public; Owner: user
+--
+
+ALTER TABLE ONLY public.ml_request
+    ADD CONSTRAINT ml_request_id_user_fkey FOREIGN KEY (id_user) REFERENCES public.users(id_user);
 
 
 --

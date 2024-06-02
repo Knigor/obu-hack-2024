@@ -1,24 +1,29 @@
 <template>
-  <div class="flex items-center justify-center h-screen">
-    <div class="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
-      <div class="absolute inset-0 bg-image"></div>
-
-      <div class="relative z-200 flex items-center text-lg font-medium gap-2">
-        <Plane />
-        <p class="text-2xl font-semibold">5-fly</p>
+  <div class="flex items-center justify-between h-screen w-screen">
+    <div class="flex flex-col w-full justify-between h-full pl-12 dark:border-r lg:flex bg-image">
+      <div
+        @click="goToMain"
+        class="flex items-center text-lg font-medium gap-2 w-fit pt-10 pb-2 px-8 bg-[rgba(255,255,255,0.65)] rounded-bl-lg rounded-br-lg hover:cursor-pointer transition-colors hover:bg-[rgba(255,255,255,0.80)]"
+      >
+        <Plane color="black" />
+        <p class="text-black text-2xl font-semibold">5-fly</p>
       </div>
-      <div class="relative z-20 mt-auto">
+
+      <div
+        class="flex items-center gap-2 w-[680px] pb-10 pt-4 px-8 bg-[rgba(255,255,255,0.65)] rounded-tl-lg rounded-tr-lg"
+      >
         <blockquote class="space-y-2">
-          <p class="text-lg">
-            “Стратегия без тактики — это самый медленный путь к победе. Тактика без стратегии — это
-            просто суета перед поражением.”
+          <p class="text-base text-black font-semibold">
+            «Стратегия без тактики — это самый медленный путь к победе. Тактика без стратегии — это
+            просто суета перед поражением»
           </p>
-          <footer class="text-sm">Сунь Цзы</footer>
+          <footer class="text-sm text-black">— Сунь Цзы</footer>
         </blockquote>
       </div>
     </div>
 
-    <div class="flex flex-col items-center gap-4 ml-24 mr-12">
+    <!-- Блок с формой регистрации -->
+    <div class="flex flex-col justify-center items-center gap-4 px-24 h-full bg-white shadow-2xl">
       <h2>Зарегистрируйтесь</h2>
       <div class="border-t h-5 w-96 border-green-600"></div>
 
@@ -51,6 +56,15 @@
               <FormMessage />
             </FormItem>
           </FormField>
+          <div class="flex items-center space-x-2">
+            <Checkbox id="terms" />
+            <label
+              for="terms"
+              class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              Я согласен на обработку персональных данных
+            </label>
+          </div>
 
           <div class="flex">
             <Toaster />
@@ -72,6 +86,7 @@ import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Toaster } from '@/components/ui/toast'
 import { useToast } from '@/components/ui/toast/use-toast'
+import { Checkbox } from '@/components/ui/checkbox'
 import { useRoute, useRouter } from 'vue-router'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'

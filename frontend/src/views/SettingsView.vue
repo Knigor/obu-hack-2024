@@ -1,5 +1,5 @@
 <template>
-  <section class="flex flex-col gap-6 w-full">
+  <section class="flex flex-col gap-6 w-full pb-16">
     <div class="flex gap-8">
       <div class="flex flex-col gap-4">
         <Avatar class="w-[128px] h-[128px] rounded-2xl">

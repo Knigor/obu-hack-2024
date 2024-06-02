@@ -72,15 +72,21 @@
                 <p>Вылетаем</p>
                 <Popover>
                   <PopoverTrigger as-child>
-                    <Button variant="outline">
+                    <Button
+                      variant="outline"
+                      :class="
+                        cn(
+                          'w-full justify-start text-left font-normal',
+                          !value && 'text-muted-foreground'
+                        )
+                      "
+                    >
                       <CalendarIcon class="mr-2 h-4 w-4" />
-                      {{
-                        valueTo ? df.format(valueTo.toDate(getLocalTimeZone())) : 'Выберите дату'
-                      }}
+                      {{ value ? df.format(value.toDate(getLocalTimeZone())) : 'Выберите дату' }}
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent class="w-auto p-0">
-                    <Calendar v-model="valueTo" initial-focus />
+                    <Calendar v-model="value" initial-focus />
                   </PopoverContent>
                 </Popover>
               </div>
@@ -351,6 +357,8 @@ import FavoritePlace from '@/components/custom/profile/FavoritePlace.vue'
 import { ref, onMounted } from 'vue'
 import { DateFormatter, getLocalTimeZone } from '@internationalized/date'
 import { Card } from '@/components/ui/card'
+import { cn } from '@/lib/utils'
+import { DateTimePicker } from 'vue-drumroll-datetime-picker'
 
 import {
   Calendar as CalendarIcon,
@@ -430,7 +438,7 @@ const classPlane = ref('Default')
 const countPeople = ref(1)
 const countStops = ref(0)
 
-const valueTo = ref()
+const value = ref()
 const valueBack = ref()
 
 // запрос на популярные данные из БД
@@ -460,22 +468,26 @@ const searchTicket = async () => {
   const data = {
     position: fromCityPosition.value,
     positionTo: toCityPosition.value,
-    classPlane: classPlane.value
+    classPlane: classPlane.value,
+    airCompany: airCompanyPosition.value,
+    countStops: countStops.value,
+    depFrom: '2024-06-03 12:00',
+    depTO: '2024-06-03 19:30'
   }
 
   console.log(data)
 
-  try {
-    const response = await axios.post('http://127.0.0.1:5000/getTicket', data, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+  // try {
+  //   const response = await axios.post('http://127.0.0.1:5000/getTicket', data, {
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     }
+  //   })
 
-    console.log(response.data)
-  } catch (error) {
-    console.error('Ошибка при отправке данных:', error)
-  }
+  //   console.log(response.data)
+  // } catch (error) {
+  //   console.error('Ошибка при отправке данных:', error)
+  // }
 
   visiblePopular.value = false
 }

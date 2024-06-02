@@ -5,10 +5,10 @@
       <Header :is-calculator-opened="true" />
       <!-- Поле полей ввода -->
       <div
-        class="flex flex-col gap-6 items-center justify-center shadow-md rounded-br-[100px] rounded-bl-[100px] bg-white pb-8"
+        class="flex flex-col gap-6 justify-center items-center shadow-md rounded-br-[100px] rounded-bl-[100px] bg-white pb-8"
       >
         <h2>Куда летим?</h2>
-        <div class="flex flex-col gap-6">
+        <div class="flex flex-col gap-8 w-full px-48">
           <!-- Первая строка параметров -->
           <div class="flex justify-between">
             <!-- Откуда/куда -->
@@ -70,38 +70,48 @@
               <!-- Вылет -->
               <div class="flex flex-col gap-1">
                 <p>Вылетаем</p>
-                <Popover>
-                  <PopoverTrigger as-child>
-                    <Button variant="outline">
-                      <CalendarIcon class="mr-2 h-4 w-4" />
-                      {{
-                        valueTo ? df.format(valueTo.toDate(getLocalTimeZone())) : 'Выберите дату'
-                      }}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent class="w-auto p-0">
-                    <Calendar v-model="valueTo" initial-focus />
-                  </PopoverContent>
-                </Popover>
+                <div class="flex gap-1 items-center">
+                  <Popover>
+                    <PopoverTrigger as-child>
+                      <Button variant="outline">
+                        <CalendarIcon class="mr-2 h-4 w-4" />
+                        {{
+                          valueTo ? df.format(valueTo.toDate(getLocalTimeZone())) : 'Выберите дату'
+                        }}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent class="w-auto p-0">
+                      <Calendar v-model="valueTo" initial-focus />
+                    </PopoverContent>
+                  </Popover>
+                  <Input type="numbert" class="w-14 text-center" placeholder="ЧЧ" />
+                  <p>:</p>
+                  <Input type="numbert" class="w-14 text-center" placeholder="ММ" />
+                </div>
               </div>
               <!-- Посадка -->
               <div class="flex flex-col gap-1">
                 <p>Прилетаем</p>
-                <Popover>
-                  <PopoverTrigger as-child>
-                    <Button variant="outline">
-                      <CalendarIcon class="mr-2 h-4 w-4" />
-                      {{
-                        valueBack
-                          ? df.format(valueBack.toDate(getLocalTimeZone()))
-                          : 'Выберите дату'
-                      }}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent class="w-auto p-0">
-                    <Calendar v-model="valueBack" initial-focus />
-                  </PopoverContent>
-                </Popover>
+                <div class="flex gap-1 items-center">
+                  <Popover>
+                    <PopoverTrigger as-child>
+                      <Button variant="outline">
+                        <CalendarIcon class="mr-2 h-4 w-4" />
+                        {{
+                          valueBack
+                            ? df.format(valueBack.toDate(getLocalTimeZone()))
+                            : 'Выберите дату'
+                        }}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent class="w-auto p-0">
+                      <Calendar v-model="valueBack" initial-focus />
+                    </PopoverContent>
+                  </Popover>
+                  <Input type="numbert" class="w-14 text-center" placeholder="ЧЧ" />
+                  <p>:</p>
+                  <Input type="numbert" class="w-14 text-center" placeholder="ММ" />
+                </div>
               </div>
             </div>
           </div>
@@ -361,6 +371,7 @@ import {
 } from 'lucide-vue-next'
 import { Calendar } from '@/components/ui/calendar'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import {
   DropdownMenu,

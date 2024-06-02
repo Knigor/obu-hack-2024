@@ -30,4 +30,12 @@ import { Button } from '@/components/ui/button'
 
 import { Heart, History, Settings } from 'lucide-vue-next'
 import { Card } from '@/components/ui/card'
+import { ref } from 'vue'
+
+// function calcButtonState(btnID) {
+//   if (btnID == )
+//   return 'ghost'
+// }
+
+const menuSelect = ref(0)
 </script>

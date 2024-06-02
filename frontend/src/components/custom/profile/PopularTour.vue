@@ -2,10 +2,15 @@
   <article class="w-full">
     <Card class="flex flex-col min-h-[392px] max-h-[392px] gap-4 p-4 w-full">
       <CardHeader class="p-0 w-full gap-4">
-        <div
+        <!-- <div
           class="rounded-xl self-center w-full min-h-[128px] max-h-[128px] bg-center"
           :class="calcImageURL"
-        ></div>
+        ></div> -->
+        <img
+          class="rounded-xl self-center w-[400px] min-h-[128px] max-h-[128px]"
+          :src="tourImageURL"
+          alt=""
+        />
         <CardTitle>{{ tourName }}</CardTitle>
       </CardHeader>
       <CardContent class="p-0 max-h-full overflow-hidden">
@@ -43,6 +48,7 @@ const props = defineProps(['tourName', 'tourDescription', 'tourImageURL'])
 const emits = defineEmits(['flyTo'])
 
 const calcImageURL = computed(() => {
+  console.log('bg-[url(' + tourImageURL.value + ')]')
   return 'bg-[url(' + tourImageURL.value + ')]'
 })
 

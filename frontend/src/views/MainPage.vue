@@ -232,7 +232,7 @@
           <h3>Результат подсчёта</h3>
           <Card class="flex items-center w-full gap-2">
             <div class="px-12 py-6 bg-green-300 rounded-tl-lg rounded-bl-lg">
-              <p class="text-xl font-bold text-nowrap">12 345 ₽</p>
+              <p class="text-xl font-bold text-nowrap">{{ priceML }}</p>
             </div>
             <!-- Выравнивание столбцов -->
             <div class="flex items-center w-full px-4">
@@ -261,7 +261,11 @@
       <!-- Популярные направления -->
       <div v-if="visiblePopular" class="flex justify-center items-center w-full">
         <div class="flex flex-col items-start gap-4">
-          <h3>Популярные места в {{ cityNames[toCityPosition] }}</h3>
+          <div class="flex items-center gap-2">
+            <h3>Популярные места в {{ cityNames[toCityPosition] }}</h3>
+            <Button @click="popularPlace" variant="link" class="w-[50px] mt-2">Найти</Button>
+          </div>
+
           <!-- Фильтры и сортировка -->
           <div class="flex flex-wrap gap-4">
             <DropdownMenu>
@@ -296,13 +300,34 @@
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-          <!-- TODO: подумать, действительно ли необходим скролл или можно всё в одну линию выстроить -->
-          <!-- Просмотр популярных направлений -->
-          <!-- <ScrollArea class="h-[800px] w-full rounded-md border p-4"> -->
-          <div class="flex flex-col gap-4 w-full">
-            <FavoritePlace></FavoritePlace>
-            <FavoritePlace></FavoritePlace>
-            <FavoritePlace></FavoritePlace>
+
+          <!-- Популярные места карточка-->
+          <div v-for="place in places" :key="place.id_place" class="flex flex-col gap-4 w-full">
+            <article class="flex max-h-[212px]">
+              <Card class="flex gap-4 p-4">
+                <div class="flex flex-col gap-2">
+                  <CardHeader class="p-0">
+                    <CardTitle>{{ place.name_place }}</CardTitle>
+                  </CardHeader>
+                  <CardContent class="p-0 max-h-full overflow-hidden">
+                    {{ place.desc_place }}
+                  </CardContent>
+                  <CardFooter class="flex gap-4 p-0">
+                    <Button @click="addFavorites(place.id_place)" class="gap-2"
+                      ><Heart /> {{ place.favorites_count }}</Button
+                    >
+                    <Dialog>
+                      <DialogTrigger as-child>
+                        <Button variant="ghost">Подробнее</Button>
+                      </DialogTrigger>
+                      <DialogContent class="sm:max-w-[600px]">
+                        <FavoritePlaceFull></FavoritePlaceFull>
+                      </DialogContent>
+                    </Dialog>
+                  </CardFooter>
+                </div>
+              </Card>
+            </article>
           </div>
           <!-- </ScrollArea> -->
         </div>
@@ -349,16 +374,11 @@
           <!-- TODO: подумать, действительно ли необходим скролл или можно всё в одну линию выстроить -->
           <!-- Просмотр популярных направлений -->
           <!-- <ScrollArea class="h-[800px] w-full rounded-md border p-4"> -->
-          <div class="flex flex-col gap-4 w-full">
+          <div v-for="item in items" :key="item.id_place" class="flex flex-col gap-4 w-full">
             <PopularTour
-              tour-name="Бангалор"
+              :tour-name="item.name_city"
               tour-description="И нет сомнений, что представители современных социальных резервов формируют глобальную экономическую сеть и при этом — функционально разнесены на независимые элементы. Предварительные выводы неутешительны: глубокий уровень погружения создаёт предпосылки для инновационных методов управления процессами.И нет сомнений, что представители современных социальных резервов формируют глобальную экономическую сеть и при этом — функционально разнесены на независимые элементы. Предварительные выводы неутешительны: глубокий уровень погружения создаёт предпосылки для инновационных методов управления процессами."
-              tour-image-u-r-l="https://place-hold.it/256px"
-            ></PopularTour>
-            <PopularTour
-              tour-name="Дели"
-              tour-description="И нет сомнений, что представители современных социальных резервов формируют глобальную экономическую сеть и при этом — функционально разнесены на независимые элементы. Предварительные выводы неутешительны: глубокий уровень погружения создаёт предпосылки для инновационных методов управления процессами.И нет сомнений, что представители современных социальных резервов формируют глобальную экономическую сеть и при этом — функционально разнесены на независимые элементы. Предварительные выводы неутешительны: глубокий уровень погружения создаёт предпосылки для инновационных методов управления процессами."
-              tour-image-u-r-l="https://place-hold.it/256px"
+              :tour-image-u-r-l="`http://localhost:8080/img${item.photo_city}`"
             ></PopularTour>
           </div>
           <!-- </ScrollArea> -->
@@ -372,11 +392,12 @@
 import Header from '../components/custom/profile/header.vue'
 import PopularTour from '@/components/custom/profile/PopularTour.vue'
 import FavoritePlace from '@/components/custom/profile/FavoritePlace.vue'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { DateFormatter, getLocalTimeZone } from '@internationalized/date'
 import { Card } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 import { DateTimePicker } from 'vue-drumroll-datetime-picker'
+import { Heart } from 'lucide-vue-next'
 
 import {
   Calendar as CalendarIcon,
@@ -405,7 +426,7 @@ import { ArrowDownUp } from 'lucide-vue-next'
 import { Filter } from 'lucide-vue-next'
 import axios from 'axios'
 
-const aboba = ref('абоба')
+const aboba = ref('1111')
 
 const cityNames = {
   Default: 'Выберите город',
@@ -470,9 +491,67 @@ const minBack = ref()
 
 const items = ref([])
 
+// ниже на добавление в избранное
+
+const addFavorites = async (id) => {
+  console.log(id)
+  console.log(localStorage.id_user)
+
+  const formData = new FormData()
+
+  formData.append('id_place', id)
+  formData.append('id_user', localStorage.id_user)
+
+  for (var pair of formData.entries()) {
+    console.log(pair[0] + ': ' + pair[1])
+  }
+
+  try {
+    const response = await axios.post('http://localhost:8080/add_favorites.php', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+
+    console.log(response.data)
+
+    alert('Популярное место добавлено в избранное')
+  } catch (error) {
+    console.error('Ошибка при отправке данных:', error)
+  }
+}
+
+// здесь популярные места
+
+const places = ref([])
+
+const popularPlace = async () => {
+  const formData = new FormData()
+
+  formData.append('name_city', cityNames[toCityPosition.value])
+
+  for (var pair of formData.entries()) {
+    console.log(pair[0] + ': ' + pair[1])
+  }
+
+  try {
+    const response = await axios.post('http://localhost:8080/places_sort.php', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+
+    places.value = response.data
+
+    console.log(response.data)
+  } catch (error) {
+    console.error('Ошибка при отправке данных:', error)
+  }
+}
+
 const popularRoots = async () => {
   try {
-    const response = await axios.get('http://localhost:8080/root_sort.php')
+    const response = await axios.get('http://localhost:8080/popular_root.php')
     items.value = response.data
 
     console.log(items.value)
@@ -486,6 +565,8 @@ onMounted(popularRoots)
 // ниже логика отображение популярных
 
 let visiblePopular = ref(true)
+
+let priceML = ref()
 
 const searchTicket = async () => {
   console.log('КЛИК')
@@ -501,22 +582,24 @@ const searchTicket = async () => {
     airCompany: airCompanyPosition.value,
     countStops: countStops.value,
     depFrom: `${valueTo.value.year}-${valueTo.value.month}-${valueTo.value.day} ${hourTo.value}:${minTo.value}`,
-    depTO: `${valueBack.value.year}-${valueBack.value.month}-${valueBack.value.day} ${hourBack.value}:${minBack.value}`
+    depTo: `${valueBack.value.year}-${valueBack.value.month}-${valueBack.value.day} ${hourBack.value}:${minBack.value}`
   }
 
   console.log(data)
 
-  // try {
-  //   const response = await axios.post('http://127.0.0.1:5000/getTicket', data, {
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     }
-  //   })
+  try {
+    const response = await axios.post('http://127.0.0.1:5000/getTicket', data, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
 
-  //   console.log(response.data)
-  // } catch (error) {
-  //   console.error('Ошибка при отправке данных:', error)
-  // }
+    console.log(response.data)
+
+    priceML.value = Math.trunc(response.data.data.price) + ' ₽'
+  } catch (error) {
+    console.error('Ошибка при отправке данных:', error)
+  }
 
   visiblePopular.value = false
 }

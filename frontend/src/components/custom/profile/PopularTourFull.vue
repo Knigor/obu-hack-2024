@@ -1,10 +1,15 @@
 <template>
   <article class="flex flex-col min-h-[600px] max-h-[600px] gap-2 p-4 w-full">
     <header class="flex flex-col w-full gap-4">
-      <div
+      <!-- <div
         class="rounded-xl self-center w-full min-h-[128px] max-h-[128px] bg-cover bg-center"
         :class="calcImageURL"
-      ></div>
+      ></div> -->
+      <img
+        class="rounded-xl self-center w-full min-h-[128px] max-h-[128px] bg-center"
+        :src="tourImageURL"
+        alt=""
+      />
       <h3>{{ tourName }}</h3>
     </header>
     <div class="overflow-hidden h-full">

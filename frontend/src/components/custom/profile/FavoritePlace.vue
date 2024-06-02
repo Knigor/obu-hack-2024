@@ -40,27 +40,4 @@ const cardHeaderText = ref('Московский кремль')
 const cardDescriptionText = ref(
   'Внезапно, сторонники тоталитаризма в науке набирают популярность среди определенных слоев населения, а значит, должны быть подвергнуты целой серии независимых исследований. В целом, конечно, высокое качество позиционных исследований создаёт предпосылки для как самодостаточных, так и внешне зависимых концептуальных решений. Таким образом, экономическая повестка сегодняшнего дня выявляет срочную потребность прогресса профессионального сообщества. В рамках спецификации современных стандартов, многие известные личности, превозмогая сложившуюся непростую экономическую ситуацию, представлены в исключительно положительном свете. Предварительные выводы неутешительны: социально-экономическое развитие создаёт предпосылки для прогресса профессионального сообщества.'
 )
-const cardLikesAmount = ref(69)
-
-console.log('ABOBA')
-
-const getFavorites = async () => {
-  const formData = new FormData()
-  formData.append('id_user', localStorage.id_user)
-
-  console.log(localStorage.id_user)
-  try {
-    const response = await axios.post('http://localhost:8080/get_user_favorites.php', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-
-    console.log(response.data)
-  } catch (error) {
-    console.error('Ошибка:', error)
-  }
-}
-
-onMounted(getFavorites)
 </script>

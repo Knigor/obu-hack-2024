@@ -13,7 +13,9 @@
                 {{ item.desc_place }}
               </CardContent>
               <CardFooter class="p-0">
-                <Button class="gap-2"><Heart /> {{ item.favorites_count }}</Button>
+                <Button @click="deleteFavorites(item.id_place)" class="gap-2"
+                  ><Heart /> {{ item.favorites_count }}</Button
+                >
               </CardFooter>
             </div>
             <img
@@ -37,13 +39,36 @@ import { Heart } from 'lucide-vue-next'
 
 const placesAmount = ref() // Сколько всего избранных мест
 
-const cardHeaderText = ref('Московский кремль')
-const cardDescriptionText = ref(
-  'Внезапно, сторонники тоталитаризма в науке набирают популярность среди определенных слоев населения, а значит, должны быть подвергнуты целой серии независимых исследований. В целом, конечно, высокое качество позиционных исследований создаёт предпосылки для как самодостаточных, так и внешне зависимых концептуальных решений. Таким образом, экономическая повестка сегодняшнего дня выявляет срочную потребность прогресса профессионального сообщества. В рамках спецификации современных стандартов, многие известные личности, превозмогая сложившуюся непростую экономическую ситуацию, представлены в исключительно положительном свете. Предварительные выводы неутешительны: социально-экономическое развитие создаёт предпосылки для прогресса профессионального сообщества.'
-)
-const cardLikesAmount = ref(69)
-
 console.log('ABOBA')
+
+// удаление из избранного
+
+const deleteFavorites = async (id) => {
+  console.log(id)
+  console.log(localStorage.id_user)
+
+  const formData = new FormData()
+
+  formData.append('id_place', id)
+  formData.append('id_user', localStorage.id_user)
+
+  for (var pair of formData.entries()) {
+    console.log(pair[0] + ': ' + pair[1])
+  }
+
+  try {
+    const response = await axios.post('http://localhost:8080/delete_favorites.php', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+
+    console.log(response.data)
+    getFavorites()
+  } catch (error) {
+    console.error('Ошибка при отправке данных:', error)
+  }
+}
 
 const items = ref([])
 

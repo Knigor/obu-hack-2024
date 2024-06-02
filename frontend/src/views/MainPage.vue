@@ -205,7 +205,7 @@
       </div>
     </div>
     <!-- Область просмотра -->
-    <div class="flex flex-col max-w-[800px] gap-8 pb-16">
+    <div class="flex flex-col w-full max-w-[800px] gap-8 pb-16">
       <!-- Карточка с вычисленной ценой -->
       <div class="flex justify-center items-center w-full">
         <div class="flex flex-col items-start gap-4 w-full">

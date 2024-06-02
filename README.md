@@ -37,6 +37,7 @@
 2. Заходите в Postman по `https://www.postman.com/notfive/workspace/notfive-workspace/overview` или ищите команду `notFive` в и переходите на `notFive Workspace` 
 3. Вас интересует obu_hack, выбираете его 
 4. Делаете форк и можете тестировать ( тестировать в браузере нельзя )
+5. https://app.getpostman.com/join-team?invite_code=a88465f33eda6b6d1cfd9284e3dc9cb2&target_code=c2e985398946eac162a4e7b3c2ab64ab - ссылка на приглашение
 
    
 
